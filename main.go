@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
+	"os/exec"
 	"strconv"
 	"time"
 
@@ -17,6 +19,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	prettyjson "github.com/hokaccha/go-prettyjson"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"github.com/updatehub/updatehub/libarchive"
 	"github.com/updatehub/updatehub/metadata"
 )
@@ -43,6 +46,13 @@ func main() {
 
 	e := echo.New()
 	e.Static("/", "public/")
+
+	ui, _ := url.Parse("http://localhost:1314/")
+
+	e.Group("/ui", middleware.Proxy(middleware.NewRoundRobinBalancer(
+		[]*middleware.ProxyTarget{{URL: ui}},
+	)))
+
 	e.POST("/", func(c echo.Context) error {
 		count, err := db.Count(&User{})
 		if err != nil {
@@ -486,6 +496,15 @@ func main() {
 
 		return c.JSON(http.StatusOK, rollout)
 	})
+
+	go func() {
+		cmd := exec.Command("npm", "run", "serve", "--", "--port", "1314")
+		cmd.Dir = "ui/"
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	log.Fatal(e.Start(":1313"))
 }
