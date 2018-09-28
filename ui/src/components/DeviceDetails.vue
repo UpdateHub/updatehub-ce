@@ -23,22 +23,22 @@
   </template>
 
   <div class="card-group">
-    <div class="card card-body bg-light">
+    <div class="card card-body">
       <strong class="card-title">Device Identity</strong>
 
       <ul class="list-group list-group-flush">
-        <li v-for="(value, key) in device.device_identity" class="list-group-item bg-light" :key="key">
+        <li v-for="(value, key) in device.device_identity" class="list-group-item" :key="key">
           <span>{{ key }}</span><br/>
           <code>{{ value }}</code>
         </li>
       </ul>
     </div>
 
-    <div class="card card-body bg-light">
+    <div class="card card-body">
       <strong class="card-title">Device Attributes</strong>
 
       <ul class="list-group list-group-flush">
-        <li v-for="(value, key) in device.device_attributes" class="list-group-item bg-light" :key="key">
+        <li v-for="(value, key) in device.device_attributes" class="list-group-item" :key="key">
           <span>{{ key }}</span><br/>
           <code>{{ value }}</code>
         </li>

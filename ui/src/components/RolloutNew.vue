@@ -7,7 +7,7 @@
     </h3>
   </div>
 
-  <div class="card card-body bg-light">
+  <div class="card card-body">
     <form>
       <div class="form-group">
         <label>Package Version</label>

@@ -9,30 +9,30 @@
     </h3>
   </div>
   <div class="card-group" v-if="rollout.package.uid">
-    <div class="card card-body bg-light">
+    <div class="card card-body">
       <ul class="list-group list-group-flush">
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span>Version</span><br/>
           {{ rollout.package.version }}
         </li>
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span>Number of Devices</span><br/>
           {{ rollout.devices.length }}
         </li>
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span>Package</span><br/>
           <router-link :to="`/packages/${rollout.package.uid}`">{{ rollout.package.uid.substring(0, 6) }}...</router-link>
         </li>
       </ul>
     </div>
 
-    <div class="card card-body bg-light">
+    <div class="card card-body">
       <ul class="list-group list-group-flush">
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span>Started At</span><br/>
           {{ rollout.started_at | humanizedDate }}
         </li>
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span>Finished At</span><br/>
           {{ rollout.started_at > rollout.finished_at ? '-' : rollout.finished_at | humanizedDate }}
         </li>
@@ -40,21 +40,21 @@
     </div>
 
 
-    <div class="card card-body bg-light col-md-3a">
+    <div class="card card-body col-md-3a">
       <span class="card-title text-center text-capitalize"><strong>Status</strong>: {{ rollout.status }}</span>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span><i class="fas fa-question-circle text-secondary"></i> {{ rollout.statistics.pending }} Pending</span><br/>
         </li>
 
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span><i class="fas fa-cog text-primary" :class="{ 'fa-spin': rollout.statistics.updating > 0 }"></i> {{ rollout.statistics.updating }} Updating</span><br/>
         </li>
 
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span><i class="fas fa-check-circle text-success"></i> {{ rollout.statistics.updated }} Updated</span><br/>
         </li>
-        <li class="list-group-item bg-light">
+        <li class="list-group-item">
           <span><i class="fas fa-exclamation-circle text-danger"></i> {{ rollout.statistics.failed }} Failed</span><br/>
         </li>
       </ul>

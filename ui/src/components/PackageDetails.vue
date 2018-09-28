@@ -24,7 +24,7 @@
   </table>
 
   <div class="card-group">
-    <div class="card card-body bg-light">
+    <div class="card card-body ">
       <strong class="card-title">Objects</strong>
 
       <table class="table table-hover">
@@ -40,37 +40,37 @@
         </tbody>
       </table>
     </div>
-    <div class="card bg-light" v-if="selectedObject >= 0">
-      <div class="card-header bg-light">
+    <div class="card" v-if="selectedObject >= 0">
+      <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs nav-fill">
           <li v-for="i in [0, 1]" :key="i" class="nav-item">
-            <a class="nav-link" v-bind:class="currentInstallSet == i ? 'active bg-light' : ''" @click="currentInstallSet = i">Installation Set #{{ i }}</a>
+            <a class="nav-link" v-bind:class="currentInstallSet == i ? 'active' : ''" @click="currentInstallSet = i">Installation Set #{{ i }}</a>
           </li>
         </ul>
       </div>
       <div class="card-body">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item bg-light">
+          <li class="list-group-item">
             <span>Mode</span><br/>
             <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject].mode }}</code>
           </li>
-          <li class="list-group-item bg-light">
+          <li class="list-group-item">
             <span>Target</span><br/>
             <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject].target }}</code>
           </li>
-          <li class="list-group-item bg-light">
+          <li class="list-group-item">
             <span>Target Path</span><br/>
             <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject]['target-path'] }}</code>
           </li>
-          <li class="list-group-item bg-light">
+          <li class="list-group-item">
             <span>Target Type</span><br/>
             <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject]['target-type'] }}</code>
           </li>
-          <li class="list-group-item bg-light">
+          <li class="list-group-item">
             <span>Filesystem</span><br/>
             <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject].filesystem }}</code>
           </li>
-          <li class="list-group-item bg-light">
+          <li class="list-group-item">
             <span>Format Device</span><br/>
             <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject]['format?'] }}</code>
           </li>
