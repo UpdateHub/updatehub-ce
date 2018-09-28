@@ -47,7 +47,23 @@
 
 <script>
 export default {
-  name: "app"
+  name: "app",
+
+  created() {
+    this.checkCurrentLogin();
+  },
+
+  updated() {
+    this.checkCurrentLogin();
+  },
+
+  methods: {
+    checkCurrentLogin() {
+      if (!this.$app.currentUser && this.$route.path !== "/login") {
+        this.$router.push("/login?redirect=" + this.$route.path);
+      }
+    }
+  }
 };
 </script>
 
