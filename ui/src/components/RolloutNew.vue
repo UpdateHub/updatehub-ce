@@ -37,9 +37,9 @@
               <td><span>{{ device.version }}</span></td>
               <td><span>{{ device.hardware }}</span></td>
             </tr>
-            <tr :key="device.uid" v-if="opened == device.uid">
+            <tr :key="device.uid + 'details'" v-if="opened == device.uid">
               <td colspan=4>
-                <DeviceView :uid="device.uid" embedded="true"></DeviceView>
+                <DeviceDetails :uid="device.uid" embedded="true"></DeviceDetails>
               </td>
             </tr>
             </template>
@@ -57,8 +57,12 @@
 </template>
 
 <script>
+import DeviceDetails from "./DeviceDetails";
+
 export default {
   name: "RolloutNew",
+
+  components: { DeviceDetails },
 
   data() {
     return {
