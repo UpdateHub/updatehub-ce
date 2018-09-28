@@ -17,6 +17,7 @@ import (
 
 	"github.com/asdine/storm"
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gobuffalo/packr"
 	prettyjson "github.com/hokaccha/go-prettyjson"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -45,13 +46,9 @@ func main() {
 	}
 
 	e := echo.New()
-	e.Static("/", "public/")
-
-	ui, _ := url.Parse("http://localhost:1314/")
-
-	e.Group("/ui", middleware.Proxy(middleware.NewRoundRobinBalancer(
-		[]*middleware.ProxyTarget{{URL: ui}},
-	)))
+	e.GET("/", func(c echo.Context) error {
+		return c.Redirect(http.StatusMovedPermanently, "/ui/")
+	})
 
 	e.POST("/", func(c echo.Context) error {
 		count, err := db.Count(&User{})
@@ -497,14 +494,26 @@ func main() {
 		return c.JSON(http.StatusOK, rollout)
 	})
 
-	go func() {
-		cmd := exec.Command("npm", "run", "serve", "--", "--port", "1314")
-		cmd.Dir = "ui/"
-		cmd.Stderr = os.Stderr
-		if err := cmd.Run(); err != nil {
-			log.Fatal(err)
-		}
-	}()
+	if os.Getenv("ENV") == "production" {
+		box := packr.NewBox("./ui/dist")
+		handler := echo.WrapHandler(http.StripPrefix("/ui", http.FileServer(box)))
+		e.GET("/ui/*", handler)
+		e.GET("/ui", handler)
+	} else {
+		ui, _ := url.Parse("http://localhost:1314/")
+		e.Group("/ui", middleware.Proxy(middleware.NewRoundRobinBalancer(
+			[]*middleware.ProxyTarget{{URL: ui}},
+		)))
+
+		go func() {
+			cmd := exec.Command("npm", "run", "serve", "--", "--port", "1314")
+			cmd.Dir = "ui/"
+			cmd.Stderr = os.Stderr
+			if err := cmd.Run(); err != nil {
+				log.Fatal(err)
+			}
+		}()
+	}
 
 	log.Fatal(e.Start(":1313"))
 }

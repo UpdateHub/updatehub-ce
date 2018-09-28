@@ -1,3 +1,10 @@
+var ManifestPlugin = require('webpack-manifest-plugin');
+
 module.exports = {
-    baseUrl: '/ui'
+    baseUrl: '/ui',
+    configureWebpack: {
+        plugins: [
+            new ManifestPlugin()
+        ]
+    }
 }
