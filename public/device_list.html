@@ -1,0 +1,20 @@
+<div>
+  <div class="pb-0 mt-0 mb-4 border-bottom">
+    <h3>Device List</h3>
+  </div>
+
+  <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <tr><th>UID</th><th class="text-center">Version</th><th class="text-center">Hardware</th></tr>
+    </thead>
+    <tbody>
+      <template v-for="device in devices">
+        <tr style="cursor:pointer" @click="$router.push(`/devices/${device.uid}`)">
+          <td>{{ device.uid }}</td>
+          <td class="text-center">{{ device.version }}</td>
+          <td class="text-center">{{ device.hardware }}</td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>

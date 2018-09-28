@@ -1,0 +1,28 @@
+<div>
+  <div class="pb-0 mt-0 mb-4 border-bottom">
+    <h3>
+      Rollout List
+      <router-link to="/rollouts/new" class="btn btn-link float-sm-right" data-toggle="modal" data-target="#createRolloutModal">
+        <i class="fas fa-plus"></i> Create Rollout
+      </router-link>
+    </h3>
+  </div>
+  
+  <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th>Version</th><th>Number of Devices</th><th>Created</th><th>Running</th>
+      </tr>
+    </thead>
+    <tbody>
+      <template v-for="rollout in rollouts">
+        <tr style="cursor:pointer" @click="$router.push(`/rollouts/${rollout.id}`)">
+          <td>{{ rollout.package.version }}</td>
+          <td>{{ rollout.devices.length }}</td>
+          <td>{{ rollout.started_at | humanizeDate }}</td>
+          <td>{{ rollout.running }}</td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>
