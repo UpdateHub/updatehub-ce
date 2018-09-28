@@ -9,6 +9,14 @@
     </h3>
   </div>
 
+  <div class="progress mb-4" v-if="uploadProgress > 0">
+    <div class="progress-bar" v-bind:style="{width: uploadProgress + '%'}"></div>
+  </div>
+
+  <div class="alert alert-danger" role="alert" v-if="lastError">
+    <strong>Failed to upload package:</strong> {{ lastError }}
+  </div>
+
   <table class="table table-bordered table-hover">
     <thead class="thead-light">
       <tr>
@@ -33,7 +41,9 @@ export default {
 
   data() {
     return {
-      packages: []
+      packages: [],
+      uploadProgress: 0,
+      lastError: null,
     };
   },
 
@@ -49,18 +59,24 @@ export default {
     },
 
     uploadPackage(e) {
+      this.lastError = null;
+
       let form = new FormData();
       form.append("file", this.$refs.file.files[0]);
 
       this.$http
         .post("/api/packages", form, {
-          headers: { "Content-Type": "multipart/form-data" }
+          headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: function(e) {
+            this.uploadProgress = parseInt(Math.round((e.loaded * 100) / e.total));
+          }.bind(this)
         })
-        .then(function() {
-          console.log("SUCCESS!!");
+        .then(res => {
+          this.$router.push("/packages/" + res.data.uid);
         })
-        .catch(function() {
-          console.log("FAILURE!!");
+        .catch(e => {
+          this.lastError = e.response.data.message;
+          this.uploadProgress = 0;
         });
     }
   }
