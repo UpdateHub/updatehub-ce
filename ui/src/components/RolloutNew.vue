@@ -27,7 +27,7 @@
         <strong>{{ devices.length }}</strong> devices will be updated to <strong>{{ selectedPackage.version }}</strong></small>
       <table class="table table-hover">
         <thead class="thead-light">
-          <tr><th></th><th>UID</th><th>Version</th><th>Hardware</th></tr>
+          <tr><th></th><th>UID</th><th>Version</th><th>Hardware</th><th></th></tr>
         </thead>
         <tbody>
             <template v-for="device in compatibleDevices()">
@@ -36,9 +36,10 @@
               <td><span>{{ device.uid }}</span></td>
               <td><span>{{ device.version }}</span></td>
               <td><span>{{ device.hardware }}</span></td>
+              <td><i class="fas" v-bind:class="{ 'fa-caret-up': opened == device.uid, 'fa-caret-down': opened != device.uid }"></i></td>
             </tr>
             <tr :key="device.uid + 'details'" v-if="opened == device.uid">
-              <td colspan=4>
+              <td colspan="5">
                 <DeviceDetails :uid="device.uid" embedded="true"></DeviceDetails>
               </td>
             </tr>

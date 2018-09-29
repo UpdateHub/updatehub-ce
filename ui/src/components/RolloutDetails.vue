@@ -41,10 +41,12 @@
 
 
     <div class="card card-body col-md-3a">
-      <span class="card-title text-center text-capitalize"><strong>Status</strong>: {{ rollout.status }}</span>
+      <span class="card-title text-center text-capitalize">
+        <strong>Status</strong>: {{ rollout.status }} <span class="text-right"><i v-if="rollout.status == 'running'" class="fas fa-circle-notch text-mutted" :class="{ 'fa-spin': true}"></i></span>
+      </span>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          <span><i class="fas fa-question-circle text-secondary"></i> {{ rollout.statistics.pending }} Pending</span><br/>
+          <span><i class="fas fa-question-circle text-mutted"></i> {{ rollout.statistics.pending }} Pending</span><br/>
         </li>
 
         <li class="list-group-item">
