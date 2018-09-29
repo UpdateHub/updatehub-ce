@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -508,6 +509,7 @@ func main() {
 		go func() {
 			cmd := exec.Command("npm", "run", "serve", "--", "--port", "1314")
 			cmd.Dir = "ui/"
+			cmd.Stdout = ioutil.Discard
 			cmd.Stderr = os.Stderr
 			if err := cmd.Run(); err != nil {
 				log.Fatal(err)
