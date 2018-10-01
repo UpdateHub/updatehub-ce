@@ -17,6 +17,8 @@ import (
 	"github.com/gustavosbarreto/updatehub-server/api/webapi"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 type User struct {
@@ -33,8 +35,33 @@ type Package struct {
 	Metadata          []byte   `json:"metadata"`
 }
 
+var cmd *cobra.Command
+
 func main() {
-	db, err := storm.Open("my.db")
+	rootCmd := &cobra.Command{
+		Use: "updatehub-ose-server",
+	}
+
+	rootCmd.PersistentFlags().StringP("db", "", "updatehub.db", "Database file")
+	rootCmd.PersistentFlags().StringP("username", "", "admin", "Admin username")
+	rootCmd.PersistentFlags().StringP("password", "", "admin", "Admin password")
+	rootCmd.PersistentFlags().IntP("port", "", 8080, "Port")
+
+	viper.SetEnvPrefix("")
+	viper.BindEnv("db")
+	viper.BindEnv("username")
+	viper.BindEnv("password")
+	viper.BindEnv("port")
+	viper.BindPFlag("db", rootCmd.PersistentFlags().Lookup("db"))
+	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
+	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
+	viper.BindPFlag("port", rootCmd.PersistentFlags().Lookup("port"))
+
+	if err := rootCmd.Execute(); err != nil {
+		log.Fatal(err)
+	}
+
+	db, err := storm.Open(viper.GetString("db"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,22 +69,6 @@ func main() {
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/ui/")
-	})
-
-	e.POST("/", func(c echo.Context) error {
-		count, err := db.Count(&User{})
-		if err != nil {
-			return c.NoContent(http.StatusInternalServerError)
-		}
-
-		if count > 0 {
-			return echo.ErrUnauthorized
-		}
-
-		return db.Save(&User{
-			Username: c.FormValue("username"),
-			Password: c.FormValue("password"),
-		})
 	})
 
 	e.POST("/login", func(c echo.Context) error {
@@ -72,14 +83,7 @@ func main() {
 			return echo.ErrUnauthorized
 		}
 
-		var user User
-		if err = db.One("Username", login.Username, &user); err != nil {
-			return echo.ErrUnauthorized
-		}
-
-		fmt.Println(user)
-
-		if user.Password == login.Password {
+		if login.Username == viper.GetString("username") && login.Password == viper.GetString("password") {
 			token := jwt.New(jwt.SigningMethodHS256)
 
 			claims := token.Claims.(jwt.MapClaims)
@@ -145,5 +149,5 @@ func main() {
 		}()
 	}
 
-	log.Fatal(e.Start(":1313"))
+	log.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt("port"))))
 }
