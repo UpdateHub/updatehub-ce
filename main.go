@@ -382,10 +382,13 @@ func main() {
 		}
 
 		var statistics struct {
-			Pending  int `json:"pending"`
-			Updating int `json:"updating"`
-			Updated  int `json:"updated"`
-			Failed   int `json:"failed"`
+			Status   string `json:"status"`
+			Statuses struct {
+				Pending  int `json:"pending"`
+				Updating int `json:"updating"`
+				Updated  int `json:"updated"`
+				Failed   int `json:"failed"`
+			} `json:"statuses"`
 		}
 
 		for _, uid := range rollout.Devices {
@@ -396,13 +399,27 @@ func main() {
 
 			switch d.Status {
 			case "pending":
-				statistics.Pending = statistics.Pending + 1
+				statistics.Statuses.Pending = statistics.Statuses.Pending + 1
 			case "downloading", "downloaded", "installing", "installed", "rebooting":
-				statistics.Updating = statistics.Updating + 1
+				statistics.Statuses.Updating = statistics.Statuses.Updating + 1
 			case "updated":
-				statistics.Updated = statistics.Updated + 1
+				statistics.Statuses.Updated = statistics.Statuses.Updated + 1
 			case "error":
-				statistics.Failed = statistics.Failed + 1
+				statistics.Statuses.Failed = statistics.Statuses.Failed + 1
+			}
+		}
+
+		if rollout.Running {
+			statistics.Status = "running"
+		} else {
+			if rollout.FinishedAt.After(rollout.StartedAt) {
+				if statistics.Statuses.Updated == len(rollout.Devices) {
+					statistics.Status = "finished"
+				} else if statistics.Statuses.Failed > 0 {
+					statistics.Status = "failed"
+				}
+			} else {
+				statistics.Status = "paused"
 			}
 		}
 

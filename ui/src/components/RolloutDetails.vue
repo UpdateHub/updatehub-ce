@@ -8,11 +8,11 @@
       <router-link to="/rollouts" class="btn btn-link float-sm-right"><i class="fas fa-caret-left"></i> Back to Rollout List</router-link>
     </h3>
   </div>
-  <div class="alert d-flex flex-row" v-if="hasSuccessfullyFinished() || hasError()" v-bind:class="{ 'alert-danger': hasError(), 'alert-success': hasSuccessfullyFinished()  }" role="alert">
-    <i class="fas fa-4x" v-bind:class="{ 'fa-check-circle': hasSuccessfullyFinished(), 'fa-exclamation-circle': hasError() }"></i>
+  <div class="alert d-flex flex-row" v-if="rollout.statistics.status != 'running'" v-bind:class="{ 'alert-danger': rollout.statistics.status == 'failed', 'alert-success': rollout.statistics.status == 'finished'  }" role="alert">
+    <i class="fas fa-4x" v-bind:class="{ 'fa-check-circle': rollout.statistics.status == 'finished', 'fa-exclamation-circle': rollout.statistics.status == 'failed' }"></i>
     <div class="align-self-center ml-2">
-      <span if="hasSuccessfullyFinished()"> All of <strong>{{ rollout.devices.length }}</strong> devices has been updated successfully!</span>
-      <span if="hasError()"> <strong>{{ rollout.statistics.failed }}</strong> of <strong>{{ rollout.devices.length }}</strong> devices has been failed while updating!</span>
+      <span v-if="rollout.statistics.status == 'finished'">All of <strong>{{ rollout.devices.length }}</strong> devices has been updated successfully!</span>
+      <span v-if="rollout.statistics.status == 'failed'"> <strong>{{ rollout.statistics.failed }}</strong> of <strong>{{ rollout.devices.length }}</strong> devices has been failed while updating!</span>
     </div>
   </div>
   <div class="card-group" v-if="rollout.package.uid">
@@ -41,7 +41,7 @@
         </li>
         <li class="list-group-item">
           <span>Finished At</span><br/>
-          {{ rollout.started_at > rollout.finished_at ? '-' : rollout.finished_at | humanizedDate }}
+          <span v-if="rollout.finished_at > rollout.started_at">{{ rollout.finished_at | humanizedDate }}</span>
         </li>
       </ul>
     </div>
@@ -49,22 +49,22 @@
 
     <div class="card card-body col-md-3a">
       <span class="card-title text-center text-capitalize">
-        <strong>Status</strong>: {{ rollout.status }} <span class="text-right"><i v-if="rollout.status == 'running'" class="fas fa-circle-notch text-mutted" :class="{ 'fa-spin': true}"></i></span>
+        <strong>Status</strong>: {{ rollout.statistics.status }} <span class="text-right"><i v-if="rollout.statistics.status == 'running'" class="fas fa-circle-notch text-mutted" :class="{ 'fa-spin': true}"></i></span>
       </span>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          <span><i class="fas fa-question-circle text-mutted"></i> {{ rollout.statistics.pending }} Pending</span><br/>
+          <span><i class="fas fa-question-circle text-mutted"></i> {{ rollout.statistics.statuses.pending }} Pending</span><br/>
         </li>
 
         <li class="list-group-item">
-          <span><i class="fas fa-cog text-primary" :class="{ 'fa-spin': rollout.statistics.updating > 0 }"></i> {{ rollout.statistics.updating }} Updating</span><br/>
+          <span><i class="fas fa-cog text-primary" :class="{ 'fa-spin': rollout.statistics.statuses.updating > 0 }"></i> {{ rollout.statistics.statuses.updating }} Updating</span><br/>
         </li>
 
         <li class="list-group-item">
-          <span><i class="fas fa-check-circle text-success"></i> {{ rollout.statistics.updated }} Updated</span><br/>
+          <span><i class="fas fa-check-circle text-success"></i> {{ rollout.statistics.statuses.updated }} Updated</span><br/>
         </li>
         <li class="list-group-item">
-          <span><i class="fas fa-exclamation-circle text-danger"></i> {{ rollout.statistics.failed }} Failed</span><br/>
+          <span><i class="fas fa-exclamation-circle text-danger"></i> {{ rollout.statistics.statuses.failed }} Failed</span><br/>
         </li>
       </ul>
     </div>
@@ -107,6 +107,7 @@ export default {
       rollout: { package: {}, devices: [], statistics: {}, status: "" },
       timer: null,
       opened: "",
+      merda: false
     };
   },
 
@@ -126,24 +127,12 @@ export default {
         rollout.package = await this.getPackage(rollout.package);
         rollout.statistics = await this.getStatistics(rollout);
 
-        if (rollout.running) {
-          rollout.status = "running";
-        } else {
-          if (rollout.finished_at > rollout.started_at) {
-            if (this.rollout.statistics.updated == this.rollout.devices.length) {
-              rollout.status = "finished";
-            } else {
-              rollout.status = "failed"
-            }
-          } else {
-            rollout.status = "paused";
-          }
-        }
-
-        rollout.devices = await Promise.all(rollout.devices.map(async d => {
-            let device = await this.getDevice(d)
-            return device
-        }));
+        rollout.devices = await Promise.all(
+          rollout.devices.map(async d => {
+            let device = await this.getDevice(d);
+            return device;
+          })
+        );
 
         return rollout;
       });
@@ -172,11 +161,9 @@ export default {
     },
 
     async getDevice(uid) {
-      return await this.$http
-        .get("/api/devices/" + uid)
-        .then(res => {
-          return res.data;
-      })
+      return await this.$http.get("/api/devices/" + uid).then(res => {
+        return res.data;
+      });
     },
 
     toggleOpened(uid) {
@@ -190,22 +177,12 @@ export default {
       }
     },
 
-    hasError() {
-      return this.rollout.status == "failed" &&
-        this.rollout.statistics.failed > 0;
-    },
-
-    hasSuccessfullyFinished() {
-      return this.rollout.status == "finished" &&
-        this.rollout.statistics.updated == this.rollout.devices.length;
-    },
-
     deviceRowContextualClass(device) {
       return {
-        "updated": "table-success",
-        "failed": "table-danger",
-        "pending": "table-secondary"
-      }[device.status]
+        updated: "table-success",
+        failed: "table-danger",
+        pending: "table-secondary"
+      }[device.status];
     }
   },
 
