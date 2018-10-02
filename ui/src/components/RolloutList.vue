@@ -9,7 +9,7 @@
     </h3>
   </div>
 
-  <table class="table table-bordered table-hover">
+  <table class="table table-bordered table-hover" v-if="rollouts.length > 0">
     <thead class="thead-light">
       <tr>
         <th>Version</th><th>Number of Devices</th><th>Created</th><th>Running</th>
@@ -24,6 +24,15 @@
         </tr>
     </tbody>
   </table>
+
+  <div class="alert d-flex flex-row" v-else-if="rollouts.length == 0">
+    <div class="col text-center">
+      <i class="fas fa-list-alt fa-6x"></i>
+      <div class="align-self-center ml-2">
+        You have not yet created any rollout
+      </div>
+    </div>
+  </div>
 </div>
 
 </template>
@@ -70,5 +79,13 @@ export default {
 <style scoped>
 tr {
   cursor: pointer;
+}
+
+.alert {
+  padding: 0;
+}
+
+.fa-list-alt {
+  color: #e5e5e5;
 }
 </style>

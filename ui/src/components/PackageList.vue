@@ -17,7 +17,7 @@
     <strong>Failed to upload package:</strong> {{ lastError }}
   </div>
 
-  <table class="table table-bordered table-hover">
+  <table class="table table-bordered table-hover" v-if="packages.length > 0">
     <thead class="thead-light">
       <tr>
         <th>UID</th><th>Version</th><th>Supported Hardware</th>
@@ -31,6 +31,15 @@
         </tr>
     </tbody>
   </table>
+
+  <div class="alert d-flex flex-row" v-else-if="packages.length == 0">
+    <div class="col text-center">
+      <i class="fas fa-list-alt fa-6x"></i>
+      <div class="align-self-center ml-2">
+        There's no uploaded packages
+      </div>
+    </div>
+  </div>
 </div>
 
 </template>
@@ -43,7 +52,7 @@ export default {
     return {
       packages: [],
       uploadProgress: 0,
-      lastError: null,
+      lastError: null
     };
   },
 
@@ -68,7 +77,9 @@ export default {
         .post("/api/packages", form, {
           headers: { "Content-Type": "multipart/form-data" },
           onUploadProgress: function(e) {
-            this.uploadProgress = parseInt(Math.round((e.loaded * 100) / e.total));
+            this.uploadProgress = parseInt(
+              Math.round((e.loaded * 100) / e.total)
+            );
           }.bind(this)
         })
         .then(res => {
@@ -86,5 +97,13 @@ export default {
 <style scoped>
 tr {
   cursor: pointer;
+}
+
+.alert {
+  padding: 0;
+}
+
+.fa-list-alt {
+  color: #e5e5e5;
 }
 </style>
