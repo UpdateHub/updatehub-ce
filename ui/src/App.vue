@@ -5,9 +5,11 @@
       <a class="navbar-brand">
         <img src="https://www.updatehub.io/imgs/updatehub-logo.png" width="200" />
       </a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto"></ul>
-      </div>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link" @click="logout()"><i class="fas fa-user-circle fa-lg"></i> Logout</a>
+        </li>
+      </ul>
     </nav>
 
     <ul class="nav nav-tabs nav-fill pt-5">
@@ -62,6 +64,11 @@ export default {
       if (!this.$app.currentUser && this.$route.path !== "/login") {
         this.$router.push("/login?redirect=" + this.$route.path);
       }
+    },
+
+    logout() {
+      localStorage.removeItem("currentUser");
+      this.$router.push("/login");
     }
   }
 };
@@ -75,6 +82,17 @@ ul {
 nav {
   padding: 10px;
   background-color: #0e293e;
+}
+
+nav ul {
+  background-color: transparent;
+}
+
+nav a:link,
+nav a:visited,
+nav a:active,
+nav a:hover {
+  color: #fff;
 }
 
 main {
