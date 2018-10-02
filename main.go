@@ -8,6 +8,8 @@ import (
 	"net/url"
 	"os"
 	"os/exec"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/asdine/storm"
@@ -17,6 +19,7 @@ import (
 	"github.com/gustavosbarreto/updatehub-server/api/webapi"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -113,26 +116,52 @@ func main() {
 	api.GET(webapi.GetRolloutStatisticsUrl, rolloutsEndpoint.GetRolloutStatistics)
 	api.POST(webapi.CreateRolloutUrl, rolloutsEndpoint.CreateRollout)
 
-	if os.Getenv("ENV") == "production" {
-		box := packr.NewBox("./ui/dist")
-		handler := echo.WrapHandler(http.StripPrefix("/ui", http.FileServer(box)))
-		e.GET("/ui/*", handler)
-		e.GET("/ui", handler)
-	} else {
+	if os.Getenv("ENV") == "development" {
 		ui, _ := url.Parse("http://localhost:1314/")
 		e.Group("/ui", middleware.Proxy(middleware.NewRoundRobinBalancer(
 			[]*middleware.ProxyTarget{{URL: ui}},
 		)))
 
+		tmpfile, err := ioutil.TempFile("", "gopid.*.js")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer os.Remove(tmpfile.Name())
+
+		if _, err := tmpfile.Write([]byte("process.kill(process.env.GOPID, 'SIGUSR1')")); err != nil {
+			log.Fatal(err)
+		}
+
+		if err := tmpfile.Close(); err != nil {
+			log.Fatal(err)
+		}
+
+		logrus.Info("Starting Vue development server...")
+
 		go func() {
-			cmd := exec.Command("npm", "run", "serve", "--", "--port", "1314")
+			cmd := exec.Command("npm", "run", "serve", "--", "--open", "--port", "1314")
 			cmd.Dir = "ui/"
+			cmd.Env = os.Environ()
+			cmd.Env = append(cmd.Env, fmt.Sprintf("BROWSER=%s", tmpfile.Name()))
+			cmd.Env = append(cmd.Env, fmt.Sprintf("GOPID=%d", os.Getpid()))
 			cmd.Stdout = ioutil.Discard
 			cmd.Stderr = os.Stderr
 			if err := cmd.Run(); err != nil {
 				log.Fatal(err)
 			}
 		}()
+
+		sigs := make(chan os.Signal, 1)
+		signal.Notify(sigs, syscall.SIGUSR1)
+		_ = <-sigs
+
+		os.Remove(tmpfile.Name())
+	} else {
+		box := packr.NewBox("./ui/dist")
+		handler := echo.WrapHandler(http.StripPrefix("/ui", http.FileServer(box)))
+		e.GET("/ui/*", handler)
+		e.GET("/ui", handler)
 	}
 
 	log.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt("port"))))
