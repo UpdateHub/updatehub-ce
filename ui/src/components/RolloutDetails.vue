@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="pb-0 mt-0 mb-4 border-bottom">
+  <div class="pb-0 mt-0 mb-4 border-bottom" v-if="!embedded">
     <h3>
       Rollout Details
       <router-link to="/packages" class="btn btn-link float-sm-right" v-if="rollout.running"><i class="fas fa-pause"></i> Pause</router-link>
@@ -8,14 +8,14 @@
       <router-link to="/rollouts" class="btn btn-link float-sm-right"><i class="fas fa-caret-left"></i> Back to Rollout List</router-link>
     </h3>
   </div>
-  <div class="alert d-flex flex-row" v-if="rollout.statistics.status != 'running'" v-bind:class="{ 'alert-danger': rollout.statistics.status == 'failed', 'alert-success': rollout.statistics.status == 'finished'  }" role="alert">
+  <div class="alert d-flex flex-row" v-if="!embedded && rollout.statistics.status != 'running'" v-bind:class="{ 'alert-danger': rollout.statistics.status == 'failed', 'alert-success': rollout.statistics.status == 'finished'  }" role="alert">
     <i class="fas fa-4x" v-bind:class="{ 'fa-check-circle': rollout.statistics.status == 'finished', 'fa-exclamation-circle': rollout.statistics.status == 'failed' }"></i>
     <div class="align-self-center ml-2">
       <span v-if="rollout.statistics.status == 'finished'">All of <strong>{{ rollout.devices.length }}</strong> devices has been updated successfully!</span>
       <span v-if="rollout.statistics.status == 'failed'"> <strong>{{ rollout.statistics.failed }}</strong> of <strong>{{ rollout.devices.length }}</strong> devices has been failed while updating!</span>
     </div>
   </div>
-  <div class="card-group" v-if="rollout.package.uid">
+  <div class="card-group mb-4" v-if="rollout.package.uid">
     <div class="card card-body">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
@@ -70,7 +70,7 @@
     </div>
   </div>
 
- <table class="table table-hover mt-4">
+ <table class="table table-hover" v-if="!embedded">
         <thead class="thead-light">
           <tr><th>UID</th><th>Version</th><th>Hardware</th><th>Status</th><th></th></tr>
         </thead>
@@ -102,12 +102,13 @@ export default {
 
   components: { DeviceDetails },
 
+  props: [ 'id', 'embedded' ],
+
   data() {
     return {
       rollout: { package: {}, devices: [], statistics: {}, status: "" },
       timer: null,
-      opened: "",
-      merda: false
+      opened: ""
     };
   },
 
@@ -123,7 +124,8 @@ export default {
 
   methods: {
     async refresh() {
-      this.rollout = await this.getRollout().then(async rollout => {
+      const id = this.$route.params.id || this.id
+      this.rollout = await this.getRollout(id).then(async rollout => {
         rollout.package = await this.getPackage(rollout.package);
         rollout.statistics = await this.getStatistics(rollout);
 
@@ -138,9 +140,9 @@ export default {
       });
     },
 
-    async getRollout() {
+    async getRollout(id) {
       return await this.$http
-        .get("/api/rollouts/" + this.$route.params.id)
+        .get("/api/rollouts/" + id)
         .then(res => {
           return res.data;
         });
