@@ -21,20 +21,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-type User struct {
-	ID       int    `storm:"id,increment"`
-	Username string `storm:"index"`
-	Password string
-}
-
-type Package struct {
-	UID               string   `storm:"id" json:"uid"`
-	Version           string   `json:"version"`
-	SupportedHardware []string `json:"supported_hardware"`
-	Signature         []byte   `json:"signature"`
-	Metadata          []byte   `json:"metadata"`
-}
-
 var cmd *cobra.Command
 
 func main() {

@@ -1,7 +1,6 @@
 package webapi
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -57,7 +56,6 @@ func (api *RolloutsAPI) GetRolloutStatistics(c echo.Context) error {
 
 	var rollout models.Rollout
 	if err = api.db.One("ID", id, &rollout); err != nil {
-		fmt.Println(err)
 		return err
 	}
 
@@ -117,7 +115,7 @@ func (api *RolloutsAPI) CreateRollout(c echo.Context) error {
 
 	for _, uid := range body.Devices {
 		var device models.Device
-		fmt.Println(uid)
+
 		if err := api.db.One("UID", uid, &device); err != nil {
 			return err
 		}
