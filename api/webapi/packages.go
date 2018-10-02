@@ -94,15 +94,19 @@ func (api *PackagesAPI) UploadPackage(c echo.Context) error {
 		supportedHardware = append(supportedHardware, t.(string))
 	}
 
-	err = api.db.Save(&models.Package{
+	pkg := &models.Package{
 		UID:               fmt.Sprintf("%x", uid),
 		Version:           metadata.Version,
 		SupportedHardware: supportedHardware,
 		Signature:         signature,
 		Metadata:          rawMetadata,
-	})
+	}
 
-	return err
+	if err := api.db.Save(pkg); err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, pkg)
 }
 
 func parsePackage(file string) (*metadata.UpdateMetadata, []byte, []byte, error) {
