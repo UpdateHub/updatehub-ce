@@ -182,7 +182,7 @@ export default {
     deviceRowContextualClass(device) {
       return {
         updated: "table-success",
-        failed: "table-danger",
+        error: "table-danger",
         pending: "table-secondary"
       }[device.status];
     }
