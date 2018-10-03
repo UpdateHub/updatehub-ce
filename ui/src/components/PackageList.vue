@@ -99,10 +99,6 @@ tr {
   cursor: pointer;
 }
 
-.alert {
-  padding: 0;
-}
-
 .fa-list-alt {
   color: #e5e5e5;
 }
