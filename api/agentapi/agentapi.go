@@ -53,6 +53,7 @@ func (api *AgentAPI) GetRolloutForDevice(c echo.Context) error {
 		ProductUID:       metadata.ProductUID,
 		DeviceIdentity:   metadata.DeviceIdentity,
 		DeviceAttributes: metadata.DeviceAttributes,
+		LastSeen:         time.Now(),
 	}
 
 	if metadata.LastInstalledPackage != "" {
