@@ -11,7 +11,7 @@
               <form class="form" role="form" autocomplete="off" novalidate="">
                 <div class="form-group">
                   <label for="uname1">Username</label>
-                  <input v-model="username" type="text" class="form-control form-control-lg rounded-0" name="uname1" required="">
+                  <input v-model="username" type="text" class="form-control form-control-lg rounded-0" name="uname1" required="" v-focus>
                   <div class="invalid-feedback">Oops, you missed this one.</div>
                 </div>
                 <div class="form-group">
@@ -60,6 +60,14 @@ export default {
         });
 
       e.preventDefault();
+    }
+  },
+
+  directives: {
+    focus: {
+      inserted: function (el) {
+        el.focus()
+      }
     }
   }
 };
