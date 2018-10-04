@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/asdine/storm"
+	"github.com/asdine/storm/q"
 	"github.com/gustavosbarreto/updatehub-server/models"
 	"github.com/labstack/echo"
 )
@@ -69,23 +70,37 @@ func (api *RolloutsAPI) GetRolloutStatistics(c echo.Context) error {
 		} `json:"statuses"`
 	}
 
+	statistics.Statuses.Pending = len(rollout.Devices)
+
 	for _, uid := range rollout.Devices {
 		var d models.Device
 		if err = api.db.One("UID", uid, &d); err != nil {
 			continue
 		}
 
-		switch d.Status {
-		case "pending":
-			statistics.Statuses.Pending = statistics.Statuses.Pending + 1
-		case "downloading", "downloaded", "installing", "installed", "rebooting":
-			statistics.Statuses.Updating = statistics.Statuses.Updating + 1
-		case "updated":
-			statistics.Statuses.Updated = statistics.Statuses.Updated + 1
-		case "error":
-			statistics.Statuses.Failed = statistics.Statuses.Failed + 1
+		var reports []models.Report
+		if err = api.db.Select(q.Eq("Device", d.UID)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
+			continue
+		}
+
+		for _, r := range reports {
+			if r.IsError {
+				statistics.Statuses.Failed = statistics.Statuses.Failed + 1
+				continue
+			}
+
+			switch r.Status {
+			case "downloading", "downloaded", "installing", "installed", "rebooting":
+				statistics.Statuses.Updating = statistics.Statuses.Updating + 1
+			case "updated":
+				statistics.Statuses.Updated = statistics.Statuses.Updated + 1
+			}
 		}
 	}
+
+	statistics.Statuses.Pending = statistics.Statuses.Pending - statistics.Statuses.Updating
+	statistics.Statuses.Pending = statistics.Statuses.Pending - statistics.Statuses.Updated
+	statistics.Statuses.Pending = statistics.Statuses.Pending - statistics.Statuses.Failed
 
 	if rollout.Running {
 		statistics.Status = "running"

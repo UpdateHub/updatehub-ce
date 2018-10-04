@@ -12,7 +12,7 @@
     <i class="fas fa-4x" v-bind:class="{ 'fa-check-circle': rollout.statistics.status == 'finished', 'fa-exclamation-circle': rollout.statistics.status == 'failed' }"></i>
     <div class="align-self-center ml-2">
       <span v-if="rollout.statistics.status == 'finished'">All of <strong>{{ rollout.devices.length }}</strong> devices has been updated successfully!</span>
-      <span v-if="rollout.statistics.status == 'failed'"> <strong>{{ rollout.statistics.failed }}</strong> of <strong>{{ rollout.devices.length }}</strong> devices has been failed while updating!</span>
+      <span v-if="rollout.statistics.status == 'failed'"> <strong>{{ rollout.statistics.statuses.failed }}</strong> of <strong>{{ rollout.devices.length }}</strong> devices has been failed while updating!</span>
     </div>
   </div>
   <div class="card-group mb-4" v-if="rollout.package.uid">
