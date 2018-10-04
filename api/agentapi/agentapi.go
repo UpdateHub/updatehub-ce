@@ -155,6 +155,15 @@ func (api *AgentAPI) ReportDeviceState(c echo.Context) error {
 		return err
 	}
 
+	if device.Status == "error" {
+		rollout.Running = false
+		rollout.FinishedAt = time.Now()
+
+		if err := api.db.Save(rollout); err != nil {
+			return err
+		}
+	}
+
 	report := &models.Report{
 		Rollout:   rollout.ID,
 		Device:    device.UID,
