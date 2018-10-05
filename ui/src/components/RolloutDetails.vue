@@ -128,13 +128,7 @@ export default {
       this.rollout = await this.getRollout(id).then(async rollout => {
         rollout.package = await this.getPackage(rollout.package);
         rollout.statistics = await this.getStatistics(rollout);
-
-        rollout.devices = await Promise.all(
-          rollout.devices.map(async d => {
-            let device = await this.getDevice(d);
-            return device;
-          })
-        );
+        rollout.devices = await this.getDevices(rollout);
 
         return rollout;
       });
@@ -162,8 +156,8 @@ export default {
         });
     },
 
-    async getDevice(uid) {
-      return await this.$http.get("/api/devices/" + uid).then(res => {
+    async getDevices(rollout) {
+      return await this.$http.get("/api/rollouts/" + rollout.id + "/devices").then(res => {
         return res.data;
       });
     },

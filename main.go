@@ -114,6 +114,7 @@ func main() {
 	api.GET(webapi.GetAllRolloutsUrl, rolloutsEndpoint.GetAllRollouts)
 	api.GET(webapi.GetRolloutUrl, rolloutsEndpoint.GetRollout)
 	api.GET(webapi.GetRolloutStatisticsUrl, rolloutsEndpoint.GetRolloutStatistics)
+	api.GET(webapi.GetRolloutDevicesUrl, rolloutsEndpoint.GetRolloutDevices)
 	api.POST(webapi.CreateRolloutUrl, rolloutsEndpoint.CreateRollout)
 
 	if os.Getenv("ENV") == "development" {

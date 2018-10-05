@@ -15,6 +15,7 @@ const (
 	GetAllRolloutsUrl       = "/rollouts"
 	GetRolloutUrl           = "/rollouts/:id"
 	GetRolloutStatisticsUrl = "/rollouts/:id/statistics"
+	GetRolloutDevicesUrl    = "/rollouts/:id/devices"
 	CreateRolloutUrl        = "/rollouts"
 )
 
@@ -117,6 +118,44 @@ func (api *RolloutsAPI) GetRolloutStatistics(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, statistics)
+}
+
+func (api *RolloutsAPI) GetRolloutDevices(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return err
+	}
+
+	var rollout models.Rollout
+	if err = api.db.One("ID", id, &rollout); err != nil {
+		return err
+	}
+
+	var devices []models.Device
+
+	for _, uid := range rollout.Devices {
+		var device models.Device
+		if err := api.db.One("UID", uid, &device); err != nil {
+			continue
+		}
+
+		var pkg models.Package
+		if err := api.db.One("UID", rollout.Package, &pkg); err != nil {
+			continue
+		}
+
+		var reports []models.Report
+		if err = api.db.Select(q.Eq("Device", uid)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
+			continue
+		}
+
+		device.Version = pkg.Version
+		device.Status = reports[0].Status
+
+		devices = append(devices, device)
+	}
+
+	return c.JSON(http.StatusOK, devices)
 }
 
 func (api *RolloutsAPI) CreateRollout(c echo.Context) error {
