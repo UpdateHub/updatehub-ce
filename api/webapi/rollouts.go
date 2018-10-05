@@ -145,12 +145,13 @@ func (api *RolloutsAPI) GetRolloutDevices(c echo.Context) error {
 		}
 
 		var reports []models.Report
-		if err = api.db.Select(q.Eq("Device", uid)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
-			continue
+		if err := api.db.Select(q.Eq("Device", device.UID)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
+			device.Status = "pending"
+		} else {
+			device.Status = reports[0].Status
 		}
 
 		device.Version = pkg.Version
-		device.Status = reports[0].Status
 
 		devices = append(devices, device)
 	}

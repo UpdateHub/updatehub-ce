@@ -12,4 +12,5 @@ type Report struct {
 	IsError   bool      `json:"error"`
 	Message   string    `json:"message"`
 	Timestamp time.Time `json:"timestamp"`
+	Virtual   bool      `json:"virtual"`
 }

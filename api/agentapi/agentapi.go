@@ -90,6 +90,19 @@ func (api *AgentAPI) GetRolloutForDevice(c echo.Context) error {
 
 	if device.Status == "updated" {
 		if rollout != nil {
+			report := models.Report{
+				Device:    device.UID,
+				Rollout:   rollout.ID,
+				Status:    "updated",
+				Timestamp: time.Now(),
+				IsError:   false,
+				Virtual:   true,
+			}
+
+			if err := api.db.Save(&report); err != nil {
+				return err
+			}
+
 			finished, err := rollout.IsFinished(api.db)
 			if err != nil {
 				return err
@@ -171,6 +184,7 @@ func (api *AgentAPI) ReportDeviceState(c echo.Context) error {
 		Status:    body.Status,
 		Timestamp: time.Now(),
 		IsError:   false,
+		Virtual:   false,
 	}
 
 	if body.Status == "error" {
