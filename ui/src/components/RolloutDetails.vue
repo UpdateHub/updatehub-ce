@@ -85,6 +85,9 @@
             </tr>
             <tr :key="device.uid + 'details'" v-if="opened == device.uid">
               <td colspan="5">
+                <div class="alert alert-danger">
+                  {{ lastRolloutReportForDevice.message }}
+                </div>
                 <DeviceDetails :uid="device.uid" embedded="true"></DeviceDetails>
               </td>
             </tr>
@@ -102,13 +105,14 @@ export default {
 
   components: { DeviceDetails },
 
-  props: [ 'id', 'embedded' ],
+  props: ["id", "embedded"],
 
   data() {
     return {
       rollout: { package: {}, devices: [], statistics: {}, status: "" },
       timer: null,
-      opened: ""
+      opened: "",
+      lastRolloutReportForDevice: {}
     };
   },
 
@@ -124,7 +128,7 @@ export default {
 
   methods: {
     async refresh() {
-      const id = this.$route.params.id || this.id
+      const id = this.$route.params.id || this.id;
       this.rollout = await this.getRollout(id).then(async rollout => {
         rollout.package = await this.getPackage(rollout.package);
         rollout.statistics = await this.getStatistics(rollout);
@@ -135,11 +139,9 @@ export default {
     },
 
     async getRollout(id) {
-      return await this.$http
-        .get("/api/rollouts/" + id)
-        .then(res => {
-          return res.data;
-        });
+      return await this.$http.get("/api/rollouts/" + id).then(res => {
+        return res.data;
+      });
     },
 
     async getPackage(uid) {
@@ -157,26 +159,37 @@ export default {
     },
 
     async getDevices(rollout) {
-      return await this.$http.get("/api/rollouts/" + rollout.id + "/devices").then(res => {
-        return res.data;
-      });
+      return await this.$http
+        .get("/api/rollouts/" + rollout.id + "/devices")
+        .then(res => {
+          return res.data;
+        });
     },
 
     toggleOpened(uid) {
       if (this.opened == uid) {
         this.opened = "";
+        this.lastRolloutReportForDevice = {};
       } else {
         this.opened = "";
         this.$nextTick(() => {
           this.opened = uid;
         });
+
+        this.$http
+          .get(
+            "/api/devices/" + uid + "/rollouts/" + this.rollout.id + "/reports"
+          )
+          .then(res => {
+            this.lastRolloutReportForDevice = res.data[res.data.length - 1];
+          });
       }
     },
 
     deviceRowContextualClass(device) {
       return {
         updated: "table-success",
-        error: "table-danger",
+        failed: "table-danger",
         pending: "table-secondary"
       }[device.status];
     }

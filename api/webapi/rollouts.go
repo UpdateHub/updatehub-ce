@@ -148,7 +148,11 @@ func (api *RolloutsAPI) GetRolloutDevices(c echo.Context) error {
 		if err := api.db.Select(q.Eq("Device", device.UID)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
 			device.Status = "pending"
 		} else {
-			device.Status = reports[0].Status
+			if reports[0].IsError {
+				device.Status = "failed"
+			} else {
+				device.Status = reports[0].Status
+			}
 		}
 
 		device.Version = pkg.Version

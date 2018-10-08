@@ -104,6 +104,7 @@ func main() {
 	devicesEndpoint := webapi.NewDevicesAPI(db)
 	api.GET(webapi.GetAllDevicesUrl, devicesEndpoint.GetAllDevices)
 	api.GET(webapi.GetDeviceUrl, devicesEndpoint.GetDevice)
+	api.GET(webapi.GetDeviceRolloutReportsUrl, devicesEndpoint.GetDeviceRolloutReports)
 
 	packagesEndpoint := webapi.NewPackagesAPI(db)
 	api.GET(webapi.GetAllPackagesUrl, packagesEndpoint.GetAllPackages)
