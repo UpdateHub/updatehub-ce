@@ -24,11 +24,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cmd *cobra.Command
-
 func main() {
+	cobra.OnInitialize(func() {
+		viper.AutomaticEnv()
+	})
+
 	rootCmd := &cobra.Command{
 		Use: "updatehub-ose-server",
+		Run: execute,
 	}
 
 	rootCmd.PersistentFlags().StringP("db", "", "updatehub.db", "Database file")
@@ -36,11 +39,6 @@ func main() {
 	rootCmd.PersistentFlags().StringP("password", "", "admin", "Admin password")
 	rootCmd.PersistentFlags().IntP("port", "", 8080, "Port")
 
-	viper.SetEnvPrefix("")
-	viper.BindEnv("db")
-	viper.BindEnv("username")
-	viper.BindEnv("password")
-	viper.BindEnv("port")
 	viper.BindPFlag("db", rootCmd.PersistentFlags().Lookup("db"))
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
@@ -49,7 +47,9 @@ func main() {
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
 	}
+}
 
+func execute(cmd *cobra.Command, args []string) {
 	db, err := storm.Open(viper.GetString("db"))
 	if err != nil {
 		log.Fatal(err)
