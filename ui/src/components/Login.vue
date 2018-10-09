@@ -1,5 +1,5 @@
 <template>
-<div class="container-fluid h-100 py-5" style="background-color:#0e293e">
+<div class="container-fluid h-100 py-5">
   <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -8,18 +8,17 @@
         <div class="col-md-4 mx-auto">
           <div class="card rounded-4">
             <div class="card-body">
-              <form class="form" role="form" autocomplete="off" novalidate="">
+              <form class="form" role="form" @submit.prevent="login">
                 <div class="form-group">
-                  <label for="uname1">Username</label>
-                  <input v-model="username" type="text" class="form-control form-control-lg rounded-0" name="uname1" required="" v-focus>
-                  <div class="invalid-feedback">Oops, you missed this one.</div>
+                  <label>Username</label>
+                  <input v-model="username" type="text" class="form-control form-control-lg rounded-0" required v-focus/>
                 </div>
                 <div class="form-group">
                   <label>Password</label>
-                  <input v-model="password" type="password" class="form-control form-control-lg rounded-0" required="" autocomplete="new-password">
-                  <div class="invalid-feedback">Enter your password too!</div>
+                  <input v-model="password" type="password" class="form-control form-control-lg rounded-0" required/>
                 </div>
-                <button v-on:click="login" class="btn btn-success btn-block btn-lg">Login</button>
+                <div class="alert alert-danger text-center" v-if="error">Invalid username or password</div>
+                <button type="submit" class="btn btn-success btn-block btn-lg">Login</button>
               </form>
             </div>
           </div>
@@ -37,6 +36,7 @@ export default {
 
   data() {
     return {
+      error: false,
       username: "",
       password: ""
     };
@@ -49,6 +49,7 @@ export default {
         .post("/login", form)
         .then(res => {
           this.$app.currentUser = res.data;
+          this.error = false;
           if (this.$route.query.redirect) {
             this.$router.push(this.$route.query.redirect);
           } else {
@@ -56,7 +57,7 @@ export default {
           }
         })
         .catch(e => {
-          console.log(e);
+          this.error = true;
         });
 
       e.preventDefault();
@@ -65,13 +66,16 @@ export default {
 
   directives: {
     focus: {
-      inserted: function (el) {
-        el.focus()
+      inserted: function(el) {
+        el.focus();
       }
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+.container-fluid {
+  background-color: #0e293e;
+}
 </style>
