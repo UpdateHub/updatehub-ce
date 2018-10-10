@@ -1,5 +1,5 @@
-hash: 1554d228f6508f891d7c7906ed44f03dbbce65b25ae5a73e764e92f3ee73fcb1
-updated: 2018-10-02T10:59:43.688125626-03:00
+hash: c5015fe8f81413ce922d18a2021a5e611d2db0163596df7ab244d4d86a5cfc2a
+updated: 2018-10-10T17:19:37.962561754-03:00
 imports:
 - name: github.com/asdine/storm
   version: 5a6fe65e3993f63951c8e3f64c812536c9e23595
@@ -32,7 +32,7 @@ imports:
 - name: github.com/konsorten/go-windows-terminal-sequences
   version: b729f2633dfe35f4d1d8a32385f6685610ce1cb5
 - name: github.com/labstack/echo
-  version: 6d227dfea4d2e52cb76856120b3c17f758139b4e
+  version: 1abaa3049251d17932e4313c2d6165073fd07fd8
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -49,7 +49,7 @@ imports:
 - name: github.com/mattn/go-isatty
   version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
 - name: github.com/mattn/go-shellwords
-  version: 39dbbfa24bbc39559b61cae9b20b0e8db0e55525
+  version: f8471b0a71ded0ab910825ee2cf230f25de000f1
 - name: github.com/mitchellh/mapstructure
   version: 00c29f56e2386353d58c599509e8dc3801b0d716
 - name: github.com/OSSystems/pkg
@@ -59,13 +59,13 @@ imports:
 - name: github.com/pelletier/go-toml
   version: 66540cf1fcd2c3aee6f6787dfa32a6ae9a870f12
 - name: github.com/pkg/errors
-  version: 645ef00459ed84a119197bfb8d8205042c6df63d
+  version: 816c9085562cd7ee03e7f8188a1cfd942858cded
 - name: github.com/sirupsen/logrus
-  version: a67f783a3814b8729bd2dac5780b5f78f8dbd64d
+  version: ad15b42461921f1fb3529b058c6786c6a45d5162
   subpackages:
   - hooks/test
 - name: github.com/spf13/afero
-  version: 63644898a8da0bc22138abf860edaf5277b6102e
+  version: 787d034dfe70e44075ccc060d346146ef53270ad
   subpackages:
   - mem
 - name: github.com/spf13/cast
@@ -75,11 +75,11 @@ imports:
 - name: github.com/spf13/jwalterweatherman
   version: 7c0cea34c8ece3fbeb2b27ab9b59511d360fb394
 - name: github.com/spf13/pflag
-  version: 583c0c0531f06d5278b7d917446061adc344b5cd
+  version: 3ebe029320b2676d667ae88da602a5f854788a8a
 - name: github.com/spf13/viper
   version: 2c12c60302a5a0e62ee102ca9bc996277c2f64f5
-- name: github.com/updatehub/updatehub
-  version: 5533579f00c3e2e3655ecc9410d45c6bc63b0ac0
+- name: github.com/UpdateHub/updatehub
+  version: 1d56308311f74d4781c671bdc5aa70e6462d1a25
   subpackages:
   - copy
   - installifdifferent
@@ -101,18 +101,18 @@ imports:
 - name: go.etcd.io/bbolt
   version: 7ee3ded59d4835e10f3e7d0f7603c42aa5e83820
 - name: golang.org/x/crypto
-  version: 1a580b3eff7814fc9b40602fd35256c63b50f491
+  version: 7f39a6fea4fe9364fb61e1def6a268a51b4f3a06
   subpackages:
   - acme
   - acme/autocert
   - ssh/terminal
 - name: golang.org/x/sys
-  version: 79b0c6888797020a994db17c8510466c72fe75d9
+  version: ad87a3a340fa7f3bed189293fbfa7a9b7e021ae1
   subpackages:
   - unix
   - windows
 - name: golang.org/x/text
-  version: 7922cc490dd5a7dbaa7fd5d6196b49db59ac042f
+  version: 5cec4b58c438bd98288aeb248bab2c1840713d21
   subpackages:
   - transform
   - unicode/norm
