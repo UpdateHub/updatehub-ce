@@ -15,8 +15,8 @@ import (
 	_ "github.com/updatehub/updatehub/installmodes/tarball"
 	_ "github.com/updatehub/updatehub/installmodes/ubifs"
 
+	"github.com/UpdateHub/updatehub-ce-server/models"
 	"github.com/asdine/storm"
-	"github.com/gustavosbarreto/updatehub-server/models"
 	"github.com/labstack/echo"
 	"github.com/updatehub/updatehub/libarchive"
 	"github.com/updatehub/updatehub/metadata"

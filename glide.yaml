@@ -1,4 +1,4 @@
-package: github.com/gustavosbarreto/updatehub-server
+package: github.com/UpdateHub/updatehub-ce-server
 import:
 - package: github.com/asdine/storm
   version: ~2.1.2

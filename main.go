@@ -12,11 +12,11 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/UpdateHub/updatehub-ce-server/api/agentapi"
+	"github.com/UpdateHub/updatehub-ce-server/api/webapi"
 	"github.com/asdine/storm"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gobuffalo/packr"
-	"github.com/gustavosbarreto/updatehub-server/api/agentapi"
-	"github.com/gustavosbarreto/updatehub-server/api/webapi"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/sirupsen/logrus"
