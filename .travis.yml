@@ -1,0 +1,22 @@
+language: go
+
+go:
+  - "1.11"
+  - "master"
+
+go_import_path: github.com/UpdateHub/updatehub
+
+matrix:
+  allow_failures:
+    - go: master
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:masterminds/glide'
+    packages:
+      - libarchive-dev
+      - glide
+
+script:
+  - go build && go test -v ./...
