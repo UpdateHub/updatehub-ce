@@ -8,18 +8,18 @@ import (
 	"net/http"
 	"os"
 
-	_ "github.com/updatehub/updatehub/installmodes/copy"
-	_ "github.com/updatehub/updatehub/installmodes/flash"
-	_ "github.com/updatehub/updatehub/installmodes/imxkobs"
-	_ "github.com/updatehub/updatehub/installmodes/raw"
-	_ "github.com/updatehub/updatehub/installmodes/tarball"
-	_ "github.com/updatehub/updatehub/installmodes/ubifs"
+	_ "github.com/UpdateHub/updatehub/installmodes/copy"
+	_ "github.com/UpdateHub/updatehub/installmodes/flash"
+	_ "github.com/UpdateHub/updatehub/installmodes/imxkobs"
+	_ "github.com/UpdateHub/updatehub/installmodes/raw"
+	_ "github.com/UpdateHub/updatehub/installmodes/tarball"
+	_ "github.com/UpdateHub/updatehub/installmodes/ubifs"
 
 	"github.com/UpdateHub/updatehub-ce-server/models"
 	"github.com/asdine/storm"
 	"github.com/labstack/echo"
-	"github.com/updatehub/updatehub/libarchive"
-	"github.com/updatehub/updatehub/metadata"
+	"github.com/UpdateHub/updatehub/libarchive"
+	"github.com/UpdateHub/updatehub/metadata"
 )
 
 const (

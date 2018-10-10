@@ -12,8 +12,8 @@ import (
 	"github.com/UpdateHub/updatehub-ce-server/models"
 	"github.com/asdine/storm"
 	"github.com/labstack/echo"
-	"github.com/updatehub/updatehub/libarchive"
-	"github.com/updatehub/updatehub/metadata"
+	"github.com/UpdateHub/updatehub/libarchive"
+	"github.com/UpdateHub/updatehub/metadata"
 )
 
 const (
