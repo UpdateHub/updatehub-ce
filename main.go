@@ -116,6 +116,7 @@ func execute(cmd *cobra.Command, args []string) {
 	api.GET(webapi.GetRolloutStatisticsUrl, rolloutsEndpoint.GetRolloutStatistics)
 	api.GET(webapi.GetRolloutDevicesUrl, rolloutsEndpoint.GetRolloutDevices)
 	api.POST(webapi.CreateRolloutUrl, rolloutsEndpoint.CreateRollout)
+	api.PUT(webapi.StopRolloutUrl, rolloutsEndpoint.StopRollout)
 
 	if os.Getenv("ENV") == "development" {
 		ui, _ := url.Parse("http://localhost:1314/")

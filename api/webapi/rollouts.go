@@ -17,6 +17,7 @@ const (
 	GetRolloutStatisticsUrl = "/rollouts/:id/statistics"
 	GetRolloutDevicesUrl    = "/rollouts/:id/devices"
 	CreateRolloutUrl        = "/rollouts"
+	StopRolloutUrl          = "/rollouts/:id/stop"
 )
 
 type RolloutsAPI struct {
@@ -113,7 +114,7 @@ func (api *RolloutsAPI) GetRolloutStatistics(c echo.Context) error {
 				statistics.Status = "failed"
 			}
 		} else {
-			statistics.Status = "paused"
+			statistics.Status = "stopped"
 		}
 	}
 
@@ -222,4 +223,24 @@ func (api *RolloutsAPI) CreateRollout(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, rollout)
+}
+
+func (api *RolloutsAPI) StopRollout(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return err
+	}
+
+	var rollout models.Rollout
+	if err = api.db.One("ID", id, &rollout); err != nil {
+		return err
+	}
+
+	rollout.Running = false
+
+	if err := api.db.Save(&rollout); err != nil {
+		return err
+	}
+
+	return c.NoContent(http.StatusOK)
 }
