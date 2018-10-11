@@ -18,5 +18,8 @@ addons:
       - libarchive-dev
       - glide
 
+install:
+  - glide install
+
 script:
   - go build && go test -v ./...
