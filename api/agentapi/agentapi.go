@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"github.com/UpdateHub/updatehub-ce-server/models"
-	"github.com/asdine/storm"
-	"github.com/labstack/echo"
 	"github.com/UpdateHub/updatehub/libarchive"
 	"github.com/UpdateHub/updatehub/metadata"
+	"github.com/asdine/storm"
+	"github.com/labstack/echo"
 )
 
 const (
@@ -85,7 +85,7 @@ func (api *AgentAPI) GetRolloutForDevice(c echo.Context) error {
 	}
 
 	if rollout == nil || !rollout.Running {
-		return c.JSON(http.StatusNotFound, nil)
+		return c.NoContent(http.StatusNotFound)
 	}
 
 	if device.Status == "updated" {
@@ -118,7 +118,7 @@ func (api *AgentAPI) GetRolloutForDevice(c echo.Context) error {
 			}
 		}
 
-		return c.JSON(http.StatusNotFound, nil)
+		return c.NoContent(http.StatusNotFound)
 	}
 
 	var pkg models.Package
