@@ -48,9 +48,8 @@
       </table>
 
       <div>
-        <button class="btn btn-primary float-sm-right ml-1" @click="save(true)" :disabled="selectedDevices.length == 0">Save and Start</button>
-        <button class="btn btn-outline-primary float-sm-right" @click="save(false)" :disabled="selectedDevices.length == 0">Save</button>
-        <button class="btn btn-default float-sm-left" @click="refresh">Refresh</button>
+        <button class="btn btn-primary float-sm-right ml-1" @click="create()" :disabled="selectedDevices.length == 0">Create</button>
+        <button class="btn btn-outline-primary float-sm-left" @click="refresh">Refresh</button>
       </div>
     </template>
   </div>
@@ -143,14 +142,13 @@ export default {
       });
     },
 
-    save(start) {
+    create() {
       this.$http
         .post("/api/rollouts", {
           package: this.selectedPackage.uid,
           devices: this.selectedDevices.map(d => {
             return d.uid;
-          }),
-          running: start
+          })
         })
         .then(res => {
           let rollout = res.data;

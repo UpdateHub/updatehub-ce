@@ -3,12 +3,11 @@
   <div class="pb-0 mt-0 mb-4 border-bottom" v-if="!embedded">
     <h3>
       Rollout Details
-      <router-link to="/packages" class="btn btn-link float-sm-right" v-if="rollout.running"><i class="fas fa-pause"></i> Pause</router-link>
-      <router-link to="/packages" class="btn btn-link float-sm-right" v-if="!rollout.running"><i class="fas fa-play"></i> Play</router-link>
+      <a href="#" class="btn btn-link float-sm-right" v-if="rollout.running" @click="stop()"><i class="fas fa-ban"></i> Stop</a>
       <router-link to="/rollouts" class="btn btn-link float-sm-right"><i class="fas fa-caret-left"></i> Back to Rollout List</router-link>
     </h3>
   </div>
-  <div class="alert d-flex flex-row" v-if="!embedded && rollout.statistics.status != 'running'" v-bind:class="{ 'alert-danger': rollout.statistics.status == 'failed', 'alert-success': rollout.statistics.status == 'finished'  }" role="alert">
+  <div class="alert d-flex flex-row" v-if="!embedded && ['finised', 'failed'].includes(rollout.statistics.status)" v-bind:class="{ 'alert-danger': rollout.statistics.status == 'failed', 'alert-success': rollout.statistics.status == 'finished'  }" role="alert">
     <i class="fas fa-4x" v-bind:class="{ 'fa-check-circle': rollout.statistics.status == 'finished', 'fa-exclamation-circle': rollout.statistics.status == 'failed' }"></i>
     <div class="align-self-center ml-2">
       <span v-if="rollout.statistics.status == 'finished'">All of <strong>{{ rollout.devices.length }}</strong> devices has been updated successfully!</span>
@@ -164,6 +163,12 @@ export default {
         .then(res => {
           return res.data;
         });
+    },
+
+    stop() {
+      this.$http.put("/api/rollouts/" + this.rollout.id + "/stop").then(res => {
+        this.refresh();
+      });
     },
 
     toggleOpened(uid) {
