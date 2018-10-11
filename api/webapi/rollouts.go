@@ -168,7 +168,6 @@ func (api *RolloutsAPI) CreateRollout(c echo.Context) error {
 	var body struct {
 		Package string   `json:"package"`
 		Devices []string `json:"devices"`
-		Running bool     `json:"running"`
 	}
 
 	c.Bind(&body)
@@ -198,7 +197,7 @@ func (api *RolloutsAPI) CreateRollout(c echo.Context) error {
 	rollout := models.Rollout{
 		Package: body.Package,
 		Devices: body.Devices,
-		Running: body.Running,
+		Running: true,
 	}
 
 	if rollout.Running {
