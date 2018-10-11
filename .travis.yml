@@ -4,7 +4,7 @@ go:
   - "1.11"
   - "master"
 
-go_import_path: github.com/UpdateHub/updatehub
+go_import_path: github.com/UpdateHub/updatehub-ce-server
 
 matrix:
   allow_failures:
@@ -17,6 +17,9 @@ addons:
     packages:
       - libarchive-dev
       - glide
+
+install:
+  - glide install
 
 script:
   - go build && go test -v ./...
