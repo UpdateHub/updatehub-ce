@@ -85,7 +85,6 @@ func execute(cmd *cobra.Command, args []string) {
 				return err
 			}
 			return c.JSON(http.StatusOK, map[string]string{
-				"name":  "Gustavo",
 				"token": t,
 			})
 		}
