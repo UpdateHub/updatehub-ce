@@ -38,11 +38,13 @@ func main() {
 	rootCmd.PersistentFlags().StringP("username", "", "admin", "Admin username")
 	rootCmd.PersistentFlags().StringP("password", "", "admin", "Admin password")
 	rootCmd.PersistentFlags().IntP("port", "", 8080, "Port")
+	rootCmd.PersistentFlags().StringP("dir", "", "./", "Packages storage dir")
 
 	viper.BindPFlag("db", rootCmd.PersistentFlags().Lookup("db"))
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
 	viper.BindPFlag("port", rootCmd.PersistentFlags().Lookup("port"))
+	viper.BindPFlag("dir", rootCmd.PersistentFlags().Lookup("dir"))
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
@@ -105,7 +107,7 @@ func execute(cmd *cobra.Command, args []string) {
 	api.GET(webapi.GetDeviceUrl, devicesEndpoint.GetDevice)
 	api.GET(webapi.GetDeviceRolloutReportsUrl, devicesEndpoint.GetDeviceRolloutReports)
 
-	packagesEndpoint := webapi.NewPackagesAPI(db)
+	packagesEndpoint := webapi.NewPackagesAPI(db, viper.GetString("dir"))
 	api.GET(webapi.GetAllPackagesUrl, packagesEndpoint.GetAllPackages)
 	api.GET(webapi.GetPackageUrl, packagesEndpoint.GetPackage)
 	api.POST(webapi.UploadPackageUrl, packagesEndpoint.UploadPackage)
