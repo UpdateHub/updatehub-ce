@@ -1,5 +1,5 @@
-hash: c5015fe8f81413ce922d18a2021a5e611d2db0163596df7ab244d4d86a5cfc2a
-updated: 2018-10-10T17:19:37.962561754-03:00
+hash: 9df0c47f8d66ad6cff707636b469ec992f950dcade880121df5b260acb69fed7
+updated: 2018-10-18T15:51:35.658036753-03:00
 imports:
 - name: github.com/asdine/storm
   version: 5a6fe65e3993f63951c8e3f64c812536c9e23595
@@ -12,11 +12,11 @@ imports:
 - name: github.com/dgrijalva/jwt-go
   version: 06ea1031745cb8b3dab3f6a236daf2b0aa468b7e
 - name: github.com/fsnotify/fsnotify
-  version: c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9
+  version: ccc981bf80385c528a65fbfdd49bf2d8da22aa23
 - name: github.com/gobuffalo/packr
   version: 5a2cbb54c4e7d482e3f518c56f1f86f133d5204f
 - name: github.com/hashicorp/hcl
-  version: ef8a98b0bbce4a65b5aa4c368430a80ddc533168
+  version: 65a6292f0157eff210d03ed1bf6c59b190b8b906
   subpackages:
   - hcl/ast
   - hcl/parser
@@ -30,42 +30,46 @@ imports:
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/konsorten/go-windows-terminal-sequences
-  version: b729f2633dfe35f4d1d8a32385f6685610ce1cb5
+  version: 5c8c8bd35d3832f5d134ae1e1e375b69a4d25242
 - name: github.com/labstack/echo
   version: 1abaa3049251d17932e4313c2d6165073fd07fd8
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
-  version: 3bc2d333a4c30531c47051369043bcabd62ff4c0
+  version: 2a618302b929cc20862dda3aa6f02f64dbe740dd
   subpackages:
   - bytes
   - color
   - log
   - random
 - name: github.com/magiconair/properties
-  version: 2c9e9502788518c97fe44e8955cd069417ee89df
+  version: c2353362d570a7bfa228149c62842019201cfb71
 - name: github.com/mattn/go-colorable
   version: efa589957cd060542a26d2dd7832fd6a6c6c3ade
 - name: github.com/mattn/go-isatty
-  version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
+  version: 3fb116b820352b7f0c281308a4d6250c22d94e27
 - name: github.com/mattn/go-shellwords
   version: f8471b0a71ded0ab910825ee2cf230f25de000f1
 - name: github.com/mitchellh/mapstructure
-  version: 00c29f56e2386353d58c599509e8dc3801b0d716
+  version: 3536a929edddb9a5b34bd6861dc4a9647cb459fe
+- name: github.com/OSSystems/crosscoap
+  version: 499aaaacdd1cf228c941323b3f1aac55a888fefe
+- name: github.com/OSSystems/go-coap
+  version: f2a4ec53cd348eba18c55a611372ae82332caf52
 - name: github.com/OSSystems/pkg
   version: 0c38fb3a1f0ffbf57cdcd47857ee8d2dc84af1ef
   subpackages:
   - log
 - name: github.com/pelletier/go-toml
-  version: 66540cf1fcd2c3aee6f6787dfa32a6ae9a870f12
+  version: 81a861c69d25a841d0c4394f0e6f84bc8c5afae0
 - name: github.com/pkg/errors
-  version: 816c9085562cd7ee03e7f8188a1cfd942858cded
+  version: 2233dee583dcf88f3c8b22cb7a33f05a499800d8
 - name: github.com/sirupsen/logrus
   version: ad15b42461921f1fb3529b058c6786c6a45d5162
   subpackages:
   - hooks/test
 - name: github.com/spf13/afero
-  version: 787d034dfe70e44075ccc060d346146ef53270ad
+  version: d40851caa0d747393da1ffb28f7f9d8b4eeffebd
   subpackages:
   - mem
 - name: github.com/spf13/cast
@@ -73,9 +77,9 @@ imports:
 - name: github.com/spf13/cobra
   version: ef82de70bb3f60c65fb8eebacbb2d122ef517385
 - name: github.com/spf13/jwalterweatherman
-  version: 7c0cea34c8ece3fbeb2b27ab9b59511d360fb394
+  version: 103a6da826d08544f49833dabd4f1cdf8a1038bb
 - name: github.com/spf13/pflag
-  version: 3ebe029320b2676d667ae88da602a5f854788a8a
+  version: 298182f68c66c05229eb03ac171abe6e309ee79a
 - name: github.com/spf13/viper
   version: 2c12c60302a5a0e62ee102ca9bc996277c2f64f5
 - name: github.com/UpdateHub/updatehub
@@ -95,24 +99,24 @@ imports:
   - mtd
   - utils
 - name: github.com/valyala/bytebufferpool
-  version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
+  version: cdfbe9377474227bb42120c1e22fd4433e7f69bf
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: go.etcd.io/bbolt
   version: 7ee3ded59d4835e10f3e7d0f7603c42aa5e83820
 - name: golang.org/x/crypto
-  version: 7f39a6fea4fe9364fb61e1def6a268a51b4f3a06
+  version: 0c41d7ab0a0ee717d4590a44bcb987dfd9e183eb
   subpackages:
   - acme
   - acme/autocert
   - ssh/terminal
 - name: golang.org/x/sys
-  version: ad87a3a340fa7f3bed189293fbfa7a9b7e021ae1
+  version: fa43e7bc11baaae89f3f902b2b4d832b68234844
   subpackages:
   - unix
   - windows
 - name: golang.org/x/text
-  version: 5cec4b58c438bd98288aeb248bab2c1840713d21
+  version: 4d1c5fb19474adfe9562c9847ba425e7da817e81
   subpackages:
   - transform
   - unicode/norm
