@@ -39,6 +39,7 @@ func main() {
 	rootCmd.PersistentFlags().StringP("password", "", "admin", "Admin password")
 	rootCmd.PersistentFlags().IntP("port", "", 8080, "Port")
 	rootCmd.PersistentFlags().StringP("dir", "", "./", "Packages storage dir")
+	rootCmd.PersistentFlags().IntP("coap", "", 5683, "Coap server listen port")
 
 	viper.BindPFlag("db", rootCmd.PersistentFlags().Lookup("db"))
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
@@ -168,5 +169,13 @@ func execute(cmd *cobra.Command, args []string) {
 		e.GET("/ui", handler)
 	}
 
-	log.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt("port"))))
+	go func() {
+		log.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt("port"))))
+	}()
+
+	go func() {
+		log.Fatal(startCoapServer(viper.GetInt("coap"), viper.GetInt("port")))
+	}()
+
+	select {}
 }
