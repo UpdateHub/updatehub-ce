@@ -11,6 +11,7 @@ import (
 	_ "github.com/UpdateHub/updatehub/installmodes/copy"
 	_ "github.com/UpdateHub/updatehub/installmodes/flash"
 	_ "github.com/UpdateHub/updatehub/installmodes/imxkobs"
+	_ "github.com/UpdateHub/updatehub/installmodes/mender"
 	_ "github.com/UpdateHub/updatehub/installmodes/raw"
 	_ "github.com/UpdateHub/updatehub/installmodes/tarball"
 	_ "github.com/UpdateHub/updatehub/installmodes/ubifs"
