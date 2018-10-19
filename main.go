@@ -37,14 +37,14 @@ func main() {
 	rootCmd.PersistentFlags().StringP("db", "", "updatehub.db", "Database file")
 	rootCmd.PersistentFlags().StringP("username", "", "admin", "Admin username")
 	rootCmd.PersistentFlags().StringP("password", "", "admin", "Admin password")
-	rootCmd.PersistentFlags().IntP("port", "", 8080, "Port")
+	rootCmd.PersistentFlags().IntP("http", "", 8080, "HTTP listen address")
 	rootCmd.PersistentFlags().StringP("dir", "", "./", "Packages storage dir")
 	rootCmd.PersistentFlags().IntP("coap", "", 5683, "Coap server listen port")
 
 	viper.BindPFlag("db", rootCmd.PersistentFlags().Lookup("db"))
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
-	viper.BindPFlag("port", rootCmd.PersistentFlags().Lookup("port"))
+	viper.BindPFlag("http", rootCmd.PersistentFlags().Lookup("http"))
 	viper.BindPFlag("dir", rootCmd.PersistentFlags().Lookup("dir"))
 
 	if err := rootCmd.Execute(); err != nil {
@@ -170,11 +170,11 @@ func execute(cmd *cobra.Command, args []string) {
 	}
 
 	go func() {
-		log.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt("port"))))
+		log.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt("http"))))
 	}()
 
 	go func() {
-		log.Fatal(startCoapServer(viper.GetInt("coap"), viper.GetInt("port")))
+		log.Fatal(startCoapServer(viper.GetInt("coap"), viper.GetInt("http")))
 	}()
 
 	select {}
