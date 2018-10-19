@@ -27,3 +27,4 @@ import:
   - installmodes/ubifs
   - libarchive
   - metadata
+- package: github.com/OSSystems/crosscoap

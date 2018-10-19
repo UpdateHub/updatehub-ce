@@ -16,10 +16,10 @@ import (
 	_ "github.com/UpdateHub/updatehub/installmodes/ubifs"
 
 	"github.com/UpdateHub/updatehub-ce-server/models"
-	"github.com/asdine/storm"
-	"github.com/labstack/echo"
 	"github.com/UpdateHub/updatehub/libarchive"
 	"github.com/UpdateHub/updatehub/metadata"
+	"github.com/asdine/storm"
+	"github.com/labstack/echo"
 )
 
 const (
@@ -29,11 +29,12 @@ const (
 )
 
 type PackagesAPI struct {
-	db *storm.DB
+	db  *storm.DB
+	dir string
 }
 
-func NewPackagesAPI(db *storm.DB) *PackagesAPI {
-	return &PackagesAPI{db: db}
+func NewPackagesAPI(db *storm.DB, dir string) *PackagesAPI {
+	return &PackagesAPI{db: db, dir: dir}
 }
 
 func (api *PackagesAPI) GetAllPackages(c echo.Context) error {
@@ -74,7 +75,7 @@ func (api *PackagesAPI) UploadPackage(c echo.Context) error {
 
 	uid := sha256.Sum256(rawMetadata)
 
-	dst, err := os.Create(fmt.Sprintf("%x", uid))
+	dst, err := os.Create(fmt.Sprintf("%s/%x", api.dir, uid))
 	if err != nil {
 		return err
 	}
