@@ -46,6 +46,7 @@ func main() {
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
 	viper.BindPFlag("http", rootCmd.PersistentFlags().Lookup("http"))
 	viper.BindPFlag("dir", rootCmd.PersistentFlags().Lookup("dir"))
+	viper.BindPFlag("coap", rootCmd.PersistentFlags().Lookup("coap"))
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
