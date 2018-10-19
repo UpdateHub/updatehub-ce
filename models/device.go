@@ -19,7 +19,7 @@ type Device struct {
 
 func (d *Device) ActiveRollout(db *storm.DB) (*Rollout, error) {
 	var rollouts []Rollout
-	if err := db.All(&rollouts); err != nil {
+	if err := db.Find("Running", true, &rollouts); err != nil && err != storm.ErrNotFound {
 		return nil, err
 	}
 
