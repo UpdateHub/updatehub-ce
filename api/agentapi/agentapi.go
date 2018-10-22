@@ -46,23 +46,21 @@ func (api *AgentAPI) GetRolloutForDevice(c echo.Context) error {
 
 	uid := sha256.Sum256(deviceIdentity)
 
-	device := &models.Device{
-		UID:              fmt.Sprintf("%x", uid),
-		Version:          metadata.Version,
-		Hardware:         metadata.Hardware,
-		ProductUID:       metadata.ProductUID,
-		DeviceIdentity:   metadata.DeviceIdentity,
-		DeviceAttributes: metadata.DeviceAttributes,
-		LastSeen:         time.Now(),
-	}
-
-	if metadata.LastInstalledPackage != "" {
-		device.Status = "updated"
-	}
-
-	if err := api.db.Save(device); err != nil {
+	var device models.Device
+	if err = api.db.One("UID", uid, &device); err != nil && err != storm.ErrNotFound {
 		return err
 	}
+
+	if device.UID == "" {
+		device.UID = fmt.Sprintf("%x", uid)
+	}
+
+	device.Version = metadata.Version
+	device.Hardware = metadata.Hardware
+	device.ProductUID = metadata.ProductUID
+	device.DeviceIdentity = metadata.DeviceIdentity
+	device.DeviceAttributes = metadata.DeviceAttributes
+	device.LastSeen = time.Now()
 
 	var rollouts []models.Rollout
 	if err = api.db.All(&rollouts); err != nil {
@@ -85,37 +83,10 @@ func (api *AgentAPI) GetRolloutForDevice(c echo.Context) error {
 	}
 
 	if rollout == nil || !rollout.Running {
-		return c.NoContent(http.StatusNotFound)
-	}
+		device.Version = metadata.Version
 
-	if device.Status == "updated" {
-		if rollout != nil {
-			report := models.Report{
-				Device:    device.UID,
-				Rollout:   rollout.ID,
-				Status:    "updated",
-				Timestamp: time.Now(),
-				IsError:   false,
-				Virtual:   true,
-			}
-
-			if err := api.db.Save(&report); err != nil {
-				return err
-			}
-
-			finished, err := rollout.IsFinished(api.db)
-			if err != nil {
-				return err
-			}
-
-			if !finished {
-				rollout.FinishedAt = time.Now()
-				rollout.Running = false
-
-				if err = api.db.Save(rollout); err != nil {
-					return err
-				}
-			}
+		if err := api.db.Save(&device); err != nil {
+			return err
 		}
 
 		return c.NoContent(http.StatusNotFound)
@@ -124,6 +95,43 @@ func (api *AgentAPI) GetRolloutForDevice(c echo.Context) error {
 	var pkg models.Package
 	if err := api.db.One("UID", rollout.Package, &pkg); err != nil {
 		return err
+	}
+
+	if pkg.Version == metadata.Version {
+		report := models.Report{
+			Device:    device.UID,
+			Rollout:   rollout.ID,
+			Status:    "updated",
+			Timestamp: time.Now(),
+			IsError:   false,
+			Virtual:   true,
+		}
+
+		if err := api.db.Save(&report); err != nil {
+			return err
+		}
+
+		device.Status = "updated"
+
+		if err := api.db.Save(&device); err != nil {
+			return err
+		}
+
+		finished, err := rollout.IsFinished(api.db)
+		if err != nil {
+			return err
+		}
+
+		if !finished {
+			rollout.FinishedAt = time.Now()
+			rollout.Running = false
+
+			if err = api.db.Save(rollout); err != nil {
+				return err
+			}
+		}
+
+		return c.NoContent(http.StatusNotFound)
 	}
 
 	c.Response().Header().Set("UH-Signature", string(pkg.Signature))
