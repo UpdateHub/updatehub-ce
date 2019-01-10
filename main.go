@@ -34,7 +34,7 @@ func main() {
 	})
 
 	rootCmd := &cobra.Command{
-		Use: "updatehub-ose-server",
+		Use: "updatehub-ce-server",
 		Run: execute,
 	}
 
