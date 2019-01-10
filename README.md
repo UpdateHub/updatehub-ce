@@ -19,6 +19,10 @@ Flags:
       --password string   Admin password (default "admin")
       --port int          Port (default 8080)
       --username string   Admin username (default "admin")
+
+Example:
+docker run -d -p 8080:8080 updatehub/updatehub-ce-server:latest
+
 ```
 
 ## Development setup
