@@ -1,5 +1,5 @@
-UpdateHub Community Edition
-===========================
+UpdateHub Community Edition Server
+==================================
 
 > This is community edition of [UpdateHub](https://updatehub.io).
 An end-to-end solution for large scale over-the-air update of devices.
