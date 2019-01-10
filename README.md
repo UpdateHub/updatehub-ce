@@ -15,7 +15,7 @@ Usage:
 
 Flags:
       --db string         Database file (default "updatehub.db")
-  -h, --help              help for updatehub-ose-server
+  -h, --help              help for updatehub-ce-server
       --password string   Admin password (default "admin")
       --port int          Port (default 8080)
       --username string   Admin username (default "admin")
