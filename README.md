@@ -20,3 +20,14 @@ Flags:
       --port int          Port (default 8080)
       --username string   Admin username (default "admin")
 ```
+
+## License
+
+Licensed under MIT, ([LICENSE](LICENSE) or https://opensource.org/licenses/MIT).
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally
+submitted for inclusion in the work by you, as defined in the MIT
+license, shall be licensed as above, without any additional terms or
+conditions.

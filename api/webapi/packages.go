@@ -1,3 +1,7 @@
+// Copyright (C) 2018 O.S. Systems Sofware LTDA
+//
+// SPDX-License-Identifier: MIT
+
 package webapi
 
 import (
