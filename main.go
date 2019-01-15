@@ -44,6 +44,7 @@ func main() {
 	rootCmd.PersistentFlags().IntP("http", "", 8080, "HTTP listen address")
 	rootCmd.PersistentFlags().StringP("dir", "", "./", "Packages storage dir")
 	rootCmd.PersistentFlags().IntP("coap", "", 5683, "Coap server listen port")
+	rootCmd.PersistentFlags().StringP("secret", "", "secret", "JWT secret key")
 
 	viper.BindPFlag("db", rootCmd.PersistentFlags().Lookup("db"))
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
@@ -51,6 +52,7 @@ func main() {
 	viper.BindPFlag("http", rootCmd.PersistentFlags().Lookup("http"))
 	viper.BindPFlag("dir", rootCmd.PersistentFlags().Lookup("dir"))
 	viper.BindPFlag("coap", rootCmd.PersistentFlags().Lookup("coap"))
+	viper.BindPFlag("secret", rootCmd.PersistentFlags().Lookup("secret"))
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
@@ -88,7 +90,7 @@ func execute(cmd *cobra.Command, args []string) {
 			claims["admin"] = true
 			claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
-			t, err := token.SignedString([]byte("secret"))
+			t, err := token.SignedString([]byte(viper.GetString("secret")))
 			if err != nil {
 				return err
 			}
@@ -106,7 +108,7 @@ func execute(cmd *cobra.Command, args []string) {
 	e.GET(agentapi.GetObjectFromPackageUrl, agentApi.GetObjectFromPackage)
 
 	api := e.Group("/api")
-	api.Use(middleware.JWT([]byte("secret")))
+	api.Use(middleware.JWT([]byte(viper.GetString("secret"))))
 
 	devicesEndpoint := webapi.NewDevicesAPI(db)
 	api.GET(webapi.GetAllDevicesUrl, devicesEndpoint.GetAllDevices)
