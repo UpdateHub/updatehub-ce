@@ -1,5 +1,5 @@
-hash: 9df0c47f8d66ad6cff707636b469ec992f950dcade880121df5b260acb69fed7
-updated: 2018-10-18T15:51:35.658036753-03:00
+hash: ff782e7ac49ea0dc9b52b83a5afbaffde92b8d8a2f170f115d0e106fed5c20ea
+updated: 2019-02-08T11:55:51.815941412-02:00
 imports:
 - name: github.com/asdine/storm
   version: 5a6fe65e3993f63951c8e3f64c812536c9e23595
@@ -32,7 +32,7 @@ imports:
 - name: github.com/konsorten/go-windows-terminal-sequences
   version: 5c8c8bd35d3832f5d134ae1e1e375b69a4d25242
 - name: github.com/labstack/echo
-  version: 1abaa3049251d17932e4313c2d6165073fd07fd8
+  version: 38772c686c76b501f94bd6cd5b77f5842e93b559
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -65,11 +65,11 @@ imports:
 - name: github.com/pkg/errors
   version: 2233dee583dcf88f3c8b22cb7a33f05a499800d8
 - name: github.com/sirupsen/logrus
-  version: ad15b42461921f1fb3529b058c6786c6a45d5162
+  version: ""
   subpackages:
   - hooks/test
 - name: github.com/spf13/afero
-  version: d40851caa0d747393da1ffb28f7f9d8b4eeffebd
+  version: f4711e4db9e9a1d3887343acb72b2bbfc2f686f5
   subpackages:
   - mem
 - name: github.com/spf13/cast
@@ -83,7 +83,7 @@ imports:
 - name: github.com/spf13/viper
   version: 2c12c60302a5a0e62ee102ca9bc996277c2f64f5
 - name: github.com/UpdateHub/updatehub
-  version: 1d56308311f74d4781c671bdc5aa70e6462d1a25
+  version: 66504de7effb681844df6075de41ad75483dda42
   subpackages:
   - copy
   - installifdifferent
@@ -91,9 +91,11 @@ imports:
   - installmodes/copy
   - installmodes/flash
   - installmodes/imxkobs
+  - installmodes/mender
   - installmodes/raw
   - installmodes/tarball
   - installmodes/ubifs
+  - installmodes/zephyr
   - libarchive
   - metadata
   - mtd
