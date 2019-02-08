@@ -19,6 +19,7 @@ import (
 	_ "github.com/UpdateHub/updatehub/installmodes/raw"
 	_ "github.com/UpdateHub/updatehub/installmodes/tarball"
 	_ "github.com/UpdateHub/updatehub/installmodes/ubifs"
+	_ "github.com/UpdateHub/updatehub/installmodes/zephyr"
 
 	"github.com/UpdateHub/updatehub-ce-server/models"
 	"github.com/UpdateHub/updatehub/libarchive"
