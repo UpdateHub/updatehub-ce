@@ -27,8 +27,9 @@ docker run -d -p 8080:8080 updatehub/updatehub-ce-server:latest
 
 ## Development setup
 
-The `updatehub-ce-server` uses `glide` to manage its dependencies and `npm` to build the web UI for the server.
-The easiest way to install its latest release on Mac or Linux is with the following script:
+The `updatehub-ce-server` uses `glide` to manage its dependencies and
+`npm` to build the web UI for the server.  The easiest way to install
+its latest release on Mac or Linux is with the following script:
 
 ```
 $ curl https://glide.sh/get | sh
@@ -40,15 +41,17 @@ On Mac OS X you can also install the latest release via Homebrew:
 $ brew install glide node
 ```
 
-On Ubuntu Precise (12.04), Trusty (14.04), Wily (15.10) or Xenial (16.04) you can install from our PPA:
+On Ubuntu Precise (12.04), Trusty (14.04), Wily (15.10) or Xenial
+(16.04) you can install from our PPA:
 
 ```
 $ sudo add-apt-repository ppa:masterminds/glide && sudo apt-get update
 $ sudo apt-get install glide nodejs npm
 ```
 
-After that, need to install `packr` that is a simple solution for bundling static assets inside of Go binaries use
-by `updatehub-ce-server`.
+After that, need to install `packr` that is a simple solution for
+bundling static assets inside of Go binaries use by
+`updatehub-ce-server`.
 
 To install Packr utility and the dependencies:
 
