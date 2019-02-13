@@ -10,16 +10,5 @@ matrix:
   allow_failures:
     - go: master
 
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:masterminds/glide'
-    packages:
-      - libarchive-dev
-      - glide
-
-install:
-  - glide install
-
 script:
   - go build && go test -v ./...
