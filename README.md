@@ -1,33 +1,61 @@
-UpdateHub Community Edition Server
-==================================
+![UpdateHub logo](https://github.com/UpdateHub/updatehub/blob/v1/doc/updatehub.png?raw=true)
 
-> This is community edition of [UpdateHub](https://updatehub.io).
-An end-to-end solution for large scale over-the-air update of devices.
+---
 
-<img align="center" src="docs/device_list.png"/>
+UpdateHub is an enterprise-grade solution which makes simple to remotely update all your Linux-based devices in the field. It handles all aspects related to sending Firmware Over-the-Air (FOTA) updates with maximum security and efficiency, while you focus in adding value to your product.
+
+To learn more about UpdateHub, check out our [documentation](https://docs.updatehub.io).
+
+## Features
+
+* **Yocto Linux support**: Integrate UpdateHub onto your existing Yocto based project
+* **Scalable**: Send updates to one device, or one million
+* **Reliability and robustness**: Automated rollback in case of update fail
+* **Powerful API & SDK**: Extend UpdateHub to fit your needs
+
+# UpdateHub Community Edition
+
+This is a community edition of **UpdateHub Cloud**, so the core concepts and functionality is identical.
+
+See the comparison table below to help you to choose which version fits you need:
+
+| Feature                                      | UpdateHubCE | UpdateHubCloud  |
+|:---                                          |    :---:    |      :---:      |
+| Secure communication (HTTPS, CoAP over DTLS) | ✘           | ✔              |
+| Signed packages                              | ✔           | ✔              |
+| Rollouts                                     | ✔           | ✔              |
+| Large scale rollouts                         | ✘           | ✔              |
+| Multiple organizations                       | ✘           | ✔              |
+| Fully monitored updates                      | ✔           | ✔              |
+| Teams                                        | ✘           | ✔              |
+| HTTP API                                     | ✘           | ✔              |
+| Package upload                               | ✔           | ✔              |
+| Multiple products                            | ✘           | ✔              |
+| Advanced device filter                       | ✘           | ✔              |
+| Multiple users                               | ✘           | ✔              |
 
 ## Usage
 
 ```
-$ docker run updatehub/updatehub-ce-server --help
+$ docker run updatehub/updatehub-ce --help
 Usage:
-  updatehub-ce-server [flags]
+  updatehub-ce [flags]
 
 Flags:
       --db string         Database file (default "updatehub.db")
-  -h, --help              help for updatehub-ce-server
+  -h, --help              help for updatehub-ce
       --password string   Admin password (default "admin")
       --port int          Port (default 8080)
       --username string   Admin username (default "admin")
 
 Example:
-docker run -d -p 8080:8080 updatehub/updatehub-ce-server:latest
+docker run -d -p 8080:8080 updatehub/updatehub-ce:latest
 
 ```
 
-## Development setup
+## Building
 
-The `updatehub-ce-server` uses `glide` to manage its dependencies and
+The `updatehub-ce` uses `glide` to manage its dependencies and
 `npm` to build the web UI for the server.  The easiest way to install
 its latest release on Mac or Linux is with the following script:
 
@@ -51,7 +79,7 @@ $ sudo apt-get install glide nodejs npm
 
 After that, need to install `packr` that is a simple solution for
 bundling static assets inside of Go binaries use by
-`updatehub-ce-server`.
+`updatehub-ce`.
 
 To install Packr utility and the dependencies:
 
@@ -61,28 +89,32 @@ $ go get -u github.com/gobuffalo/packr
 ```
 
 
-Finally, you can build `updatehub-ce-server` as:
+Finally, you can build `updatehub-ce` as:
 
 ```
-$ cd <YOUR-UPDATEHUB-CE-SERVER-PATH>/ui/ && npm install && npm run build && cd ..
+$ cd <YOUR-UPDATEHUB-CE-PATH>/ui/ && npm install && npm run build && cd ..
 $ packr install
 $ go build
 $ go install
 ```
 
-Now you can run the `updatehub-ce-server` as:
+Now you can run the `updatehub-ce` as:
 
 ```
-./updatehub-ce-server --http 8080
+./updatehub-ce --http 8080
 ```
+
+## Contributing
+
+UpdateHub is an open source project and we love to receive contributions from our community.
+If you would like to contribute, please read our [contributing guide](https://github.com/UpdateHub/updatehub/blob/v1/CONTRIBUTING.md).
 
 ## License
 
-Licensed under MIT, ([LICENSE](LICENSE) or https://opensource.org/licenses/MIT).
+UpdateHub Linux Agent is licensed under the MIT license. See [LICENSE](LICENSE) for the full license text.
 
-### Contribution
+## Getting in touch
 
-Unless you explicitly state otherwise, any contribution intentionally
-submitted for inclusion in the work by you, as defined in the MIT
-license, shall be licensed as above, without any additional terms or
-conditions.
+* Reach us on [Gitter](https://gitter.im/UpdateHub/community)
+* All source code are in [Github](https://github.com/UpdateHub)
+* Email us at [contact@updatehub.io](mailto:contact@updatehub.io)
