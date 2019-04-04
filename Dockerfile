@@ -5,8 +5,8 @@ RUN apk add --update git curl libarchive-dev build-base linux-headers nodejs nod
 RUN mkdir -p $$GOPATH/bin && \
     curl https://glide.sh/get | sh
 
-ADD . /go/src/github.com/UpdateHub/updatehub-ce-server
-WORKDIR /go/src/github.com/UpdateHub/updatehub-ce-server
+ADD . /go/src/github.com/UpdateHub/updatehub-ce
+WORKDIR /go/src/github.com/UpdateHub/updatehub-ce
 
 RUN glide i && \
     go get -u github.com/gobuffalo/packr/... && \
@@ -17,6 +17,6 @@ FROM alpine:3.8
 
 RUN apk add --update libarchive
 
-COPY --from=builder /go/bin/updatehub-ce-server /usr/bin/updatehub-ce-server
+COPY --from=builder /go/bin/updatehub-ce /usr/bin/updatehub-ce
 
-ENTRYPOINT ["/usr/bin/updatehub-ce-server"]
+ENTRYPOINT ["/usr/bin/updatehub-ce"]

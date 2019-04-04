@@ -21,7 +21,7 @@ import (
 	_ "github.com/UpdateHub/updatehub/installmodes/ubifs"
 	_ "github.com/UpdateHub/updatehub/installmodes/zephyr"
 
-	"github.com/UpdateHub/updatehub-ce-server/models"
+	"github.com/UpdateHub/updatehub-ce/models"
 	"github.com/UpdateHub/updatehub/libarchive"
 	"github.com/UpdateHub/updatehub/metadata"
 	"github.com/asdine/storm"

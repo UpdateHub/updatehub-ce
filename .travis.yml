@@ -1,6 +1,6 @@
 language: go
 
-go_import_path: github.com/UpdateHub/updatehub-ce-server
+go_import_path: github.com/UpdateHub/updatehub-ce
 
 addons:
   apt:

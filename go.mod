@@ -1,4 +1,4 @@
-module github.com/UpdateHub/updatehub-ce-server
+module github.com/UpdateHub/updatehub-ce
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
