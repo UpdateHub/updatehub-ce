@@ -16,8 +16,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/UpdateHub/updatehub-ce-server/api/agentapi"
-	"github.com/UpdateHub/updatehub-ce-server/api/webapi"
+	"github.com/UpdateHub/updatehub-ce/api/agentapi"
+	"github.com/UpdateHub/updatehub-ce/api/webapi"
 	"github.com/asdine/storm"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gobuffalo/packr"
@@ -34,7 +34,7 @@ func main() {
 	})
 
 	rootCmd := &cobra.Command{
-		Use: "updatehub-ce-server",
+		Use: "updatehub-ce",
 		Run: execute,
 	}
 

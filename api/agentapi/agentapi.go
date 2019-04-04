@@ -13,7 +13,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/UpdateHub/updatehub-ce-server/models"
+	"github.com/UpdateHub/updatehub-ce/models"
 	"github.com/UpdateHub/updatehub/libarchive"
 	"github.com/UpdateHub/updatehub/metadata"
 	"github.com/asdine/storm"
