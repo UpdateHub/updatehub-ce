@@ -111,7 +111,7 @@ If you would like to contribute, please read our [contributing guide](https://gi
 
 ## License
 
-UpdateHub Linux Agent is licensed under the MIT license. See [LICENSE](LICENSE) for the full license text.
+UpdateHub Community Edition is licensed under the MIT license. See [LICENSE](LICENSE) for the full license text.
 
 ## Getting in touch
 
