@@ -28,7 +28,7 @@ func startCoapServer(coapPort, httpPort int) error {
 
 	p := crosscoap.Proxy{
 		Listener:   udpListener,
-		BackendURL: fmt.Sprintf("http://127.0.0.1:%d/", httpPort),
+		BackendURL: fmt.Sprintf("http://:%d/", httpPort),
 		Timeout:    &timeout,
 	}
 
