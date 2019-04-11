@@ -5,11 +5,14 @@ RUN apk add --update git curl libarchive-dev build-base linux-headers nodejs nod
 RUN mkdir -p $$GOPATH/bin && \
     curl https://glide.sh/get | sh
 
-ADD . /go/src/github.com/UpdateHub/updatehub-ce
 WORKDIR /go/src/github.com/UpdateHub/updatehub-ce
 
-RUN glide i && \
-    go get -u github.com/gobuffalo/packr/... && \
+COPY glide.* ./
+RUN glide i
+
+ADD . .
+
+RUN go get -u github.com/gobuffalo/packr/... && \
     (cd ui; npm install && npm run build) && \
     packr install
 
