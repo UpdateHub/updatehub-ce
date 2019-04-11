@@ -1,4 +1,5 @@
 ![UpdateHub logo](https://github.com/UpdateHub/updatehub/blob/v1/doc/updatehub.png?raw=true)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FUpdateHub%2Fupdatehub-ce.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FUpdateHub%2Fupdatehub-ce?ref=badge_shield)
 
 ---
 
@@ -112,6 +113,9 @@ If you would like to contribute, please read our [contributing guide](https://gi
 ## License
 
 UpdateHub Community Edition is licensed under the MIT license. See [LICENSE](LICENSE) for the full license text.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FUpdateHub%2Fupdatehub-ce.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FUpdateHub%2Fupdatehub-ce?ref=badge_large)
 
 ## Getting in touch
 
