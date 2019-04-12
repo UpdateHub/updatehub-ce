@@ -75,7 +75,7 @@ func (api *AgentAPI) GetRolloutForDevice(c echo.Context) error {
 
 	for _, r := range rollouts {
 		for _, d := range r.Devices {
-			if d == device.UID {
+			if d == device.UID && r.Running {
 				rollout = &r
 				break
 			}
