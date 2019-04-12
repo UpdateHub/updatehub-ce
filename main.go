@@ -16,8 +16,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/UpdateHub/updatehub-ce/api/agentapi"
-	"github.com/UpdateHub/updatehub-ce/api/webapi"
+	"github.com/UpdateHub/updatehub-ce/api/router/agentapi"
+	"github.com/UpdateHub/updatehub-ce/api/router/webapi"
 	"github.com/asdine/storm"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gobuffalo/packr"
@@ -102,31 +102,11 @@ func execute(cmd *cobra.Command, args []string) {
 		return echo.ErrUnauthorized
 	})
 
-	agentApi := agentapi.NewAgentAPI(db)
-	e.POST(agentapi.GetRolloutForDeviceUrl, agentApi.GetRolloutForDevice)
-	e.POST(agentapi.ReportDeviceStateUrl, agentApi.ReportDeviceState)
-	e.GET(agentapi.GetObjectFromPackageUrl, agentApi.GetObjectFromPackage)
-
 	api := e.Group("/api")
 	api.Use(middleware.JWT([]byte(viper.GetString("secret"))))
 
-	devicesEndpoint := webapi.NewDevicesAPI(db)
-	api.GET(webapi.GetAllDevicesUrl, devicesEndpoint.GetAllDevices)
-	api.GET(webapi.GetDeviceUrl, devicesEndpoint.GetDevice)
-	api.GET(webapi.GetDeviceRolloutReportsUrl, devicesEndpoint.GetDeviceRolloutReports)
-
-	packagesEndpoint := webapi.NewPackagesAPI(db, viper.GetString("dir"))
-	api.GET(webapi.GetAllPackagesUrl, packagesEndpoint.GetAllPackages)
-	api.GET(webapi.GetPackageUrl, packagesEndpoint.GetPackage)
-	api.POST(webapi.UploadPackageUrl, packagesEndpoint.UploadPackage)
-
-	rolloutsEndpoint := webapi.NewRolloutsAPI(db)
-	api.GET(webapi.GetAllRolloutsUrl, rolloutsEndpoint.GetAllRollouts)
-	api.GET(webapi.GetRolloutUrl, rolloutsEndpoint.GetRollout)
-	api.GET(webapi.GetRolloutStatisticsUrl, rolloutsEndpoint.GetRolloutStatistics)
-	api.GET(webapi.GetRolloutDevicesUrl, rolloutsEndpoint.GetRolloutDevices)
-	api.POST(webapi.CreateRolloutUrl, rolloutsEndpoint.CreateRollout)
-	api.PUT(webapi.StopRolloutUrl, rolloutsEndpoint.StopRollout)
+	agentapi.SetupRoutes(e.Group(""), db)
+	webapi.SetupRoutes(api, db)
 
 	if os.Getenv("ENV") == "development" {
 		ui, _ := url.Parse("http://localhost:1314/")
