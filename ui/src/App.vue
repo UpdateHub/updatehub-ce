@@ -49,29 +49,29 @@
 
 <script>
 export default {
-  name: "app",
+  name: 'app',
 
-  created() {
-    this.checkCurrentLogin();
+  created () {
+    this.checkCurrentLogin()
   },
 
-  updated() {
-    this.checkCurrentLogin();
+  updated () {
+    this.checkCurrentLogin()
   },
 
   methods: {
-    checkCurrentLogin() {
-      if (!this.$app.currentUser && this.$route.path !== "/login") {
-        this.$router.push("/login?redirect=" + this.$route.path);
+    checkCurrentLogin () {
+      if (!this.$app.currentUser && this.$route.path !== '/login') {
+        this.$router.push('/login?redirect=' + this.$route.path)
       }
     },
 
-    logout() {
-      localStorage.removeItem("currentUser");
-      this.$router.push("/login");
+    logout () {
+      localStorage.removeItem('currentUser')
+      this.$router.push('/login')
     }
   }
-};
+}
 </script>
 
 <style scoped>

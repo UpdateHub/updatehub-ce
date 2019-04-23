@@ -50,35 +50,35 @@
 
 <script>
 export default {
-  name: "DeviceDetail",
+  name: 'DeviceDetail',
 
-  props: ["uid", "embedded"],
+  props: ['uid', 'embedded'],
 
-  data() {
+  data () {
     return {
       device: {}
-    };
+    }
   },
 
-  async created() {
-    let uid = this.$route.params.uid || this.uid;
-    this.device = await this.getDevice(uid);
+  async created () {
+    let uid = this.$route.params.uid || this.uid
+    this.device = await this.getDevice(uid)
   },
 
   methods: {
-    async getDevice(uid) {
-      return await this.$http.get("/api/devices/" + uid).then(res => {
-        return res.data;
-      });
+    async getDevice (uid) {
+      return this.$http.get('/api/devices/' + uid).then(res => {
+        return res.data
+      })
     }
   },
 
   filters: {
-    pretty: function(value) {
+    pretty: function (value) {
       return JSON.stringify(value, null, 2)
-        .replace(/\n/g, "<br/>")
-        .replace(/ /g, "&nbsp;");
+        .replace(/\n/g, '<br/>')
+        .replace(/ /g, '&nbsp;')
     }
   }
-};
+}
 </script>
