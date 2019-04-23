@@ -13,7 +13,19 @@ import RolloutList from './components/RolloutList'
 import RolloutNew from './components/RolloutNew'
 import RolloutDetails from './components/RolloutDetails'
 
-Vue.config.productionTip = false
+function errorResponseHandler(error) {
+  if (error.response.status === 401) {
+    app.currentUser = null;
+    router.push("/login?redirect=" + "/")
+  }
+}
+
+Axios.interceptors.response.use(
+  response => response,
+  errorResponseHandler
+);
+
+Vue.config.productionTip = false;
 
 Vue.prototype.$http = Axios
 
