@@ -3,9 +3,9 @@
     <div class="pb-0 mt-0 mb-4 border-bottom">
       <h3>
         Package Details
-        <router-link to="/packages" class="btn btn-link float-sm-right">
+        <a class="btn btn-link float-sm-right" @click="deletePackage">
           <i class="fas fa-trash"></i> Delete
-        </router-link>
+        </a>
         <router-link to="/packages" class="btn btn-link float-sm-right">
           <i class="fas fa-caret-left"></i> Back to Packages
         </router-link>
@@ -125,9 +125,17 @@ export default {
       return this.$http
         .get('/api/packages/' + this.$route.params.uid)
         .then(res => {
-          return res.data
-        })
-    }
+          return res.data;
+        });
+    },
+
+     deletePackage() {
+      this.$http
+      .delete("/api/packages/" + this.$route.params.uid + "/delete")
+      .then(res => {
+        this.$router.push("/packages");
+      });
+    },
   },
 
   filters: {
