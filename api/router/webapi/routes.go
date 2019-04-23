@@ -15,6 +15,7 @@ func SetupRoutes(e *echo.Group, db *storm.DB) {
 	packagesEndpoint := NewPackagesAPI(db, viper.GetString("dir"))
 	e.GET(GetAllPackagesUrl, packagesEndpoint.GetAllPackages)
 	e.GET(GetPackageUrl, packagesEndpoint.GetPackage)
+	e.DELETE(DeletePackageUrl, packagesEndpoint.DeletePackage)
 	e.POST(UploadPackageUrl, packagesEndpoint.UploadPackage)
 
 	rolloutsEndpoint := NewRolloutsAPI(db)
