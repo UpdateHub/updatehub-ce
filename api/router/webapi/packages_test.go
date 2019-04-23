@@ -154,6 +154,41 @@ func (suite *PackageTestSuite) TestGetDevices() {
 	assert.Equal(suite.T(), string(expected), strings.TrimSuffix(rec.Body.String(), "\n"))
 }
 
+func (suite *PackageTestSuite) TestDeletePackage() {
+	defer os.RemoveAll(suite.db.Bolt.Path())
+
+	pack1 := models.Package{
+		UID:               "1",
+		SupportedHardware: []string{"x86"},
+		Signature:         []byte("SIGNATURE"),
+		Metadata:          []byte("000"),
+		Version:           "1",
+	}
+
+	err := suite.db.Save(&pack1)
+	assert.NoError(suite.T(), err)
+
+	e := echo.New()
+	SetupRoutes(e.Group(""), suite.db)
+	req := httptest.NewRequest(http.MethodDelete, "/packages/1/delete", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(suite.T(), http.StatusOK, rec.Code)
+}
+
+func (suite *PackageTestSuite) TestDeletePackageError() {
+	defer os.RemoveAll(suite.db.Bolt.Path())
+
+	e := echo.New()
+	SetupRoutes(e.Group(""), suite.db)
+	req := httptest.NewRequest(http.MethodDelete, "/packages/1/delete", nil)
+	rec := httptest.NewRecorder()
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(suite.T(), http.StatusInternalServerError, rec.Code)
+}
+
 func (suite *PackageTestSuite) TestGetDevicesWithoutPackages() {
 	defer os.RemoveAll(suite.db.Bolt.Path())
 
