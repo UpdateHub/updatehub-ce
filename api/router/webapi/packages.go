@@ -32,6 +32,7 @@ const (
 	GetAllPackagesUrl = "/packages"
 	GetPackageUrl     = "/packages/:uid"
 	UploadPackageUrl  = "/packages"
+	DeletePackageUrl  = "/packages/:uid/delete"
 )
 
 type PackagesAPI struct {
@@ -59,6 +60,19 @@ func (api *PackagesAPI) GetPackage(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, pkg)
+}
+
+func (api *PackagesAPI) DeletePackage(c echo.Context) error {
+	var pkg models.Package
+	if err := api.db.One("UID", c.Param("uid"), &pkg); err != nil {
+		return err
+	}
+
+	if err := api.db.DeleteStruct(&pkg); err != nil {
+		return err
+	}
+
+	return c.NoContent(http.StatusOK)
 }
 
 func (api *PackagesAPI) UploadPackage(c echo.Context) error {

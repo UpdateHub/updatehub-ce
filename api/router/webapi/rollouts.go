@@ -85,7 +85,7 @@ func (api *RolloutsAPI) GetRolloutStatistics(c echo.Context) error {
 		}
 
 		var reports []models.Report
-		if err = api.db.Select(q.Eq("Device", d.UID)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
+		if err = api.db.Select(q.Eq("Device", d.UID), q.Eq("Rollout", rollout.ID)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
 			continue
 		}
 
@@ -150,7 +150,7 @@ func (api *RolloutsAPI) GetRolloutDevices(c echo.Context) error {
 		}
 
 		var reports []models.Report
-		if err := api.db.Select(q.Eq("Device", device.UID)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
+		if err := api.db.Select(q.Eq("Device", device.UID), q.Eq("Rollout", rollout.ID)).Limit(1).OrderBy("Timestamp").Reverse().Find(&reports); err != nil {
 			device.Status = "pending"
 		} else {
 			if reports[0].IsError {

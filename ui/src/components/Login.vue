@@ -32,46 +32,46 @@
 
 <script>
 export default {
-  name: "Login",
+  name: 'Login',
 
-  data() {
+  data () {
     return {
       error: false,
-      username: "",
-      password: ""
-    };
+      username: '',
+      password: ''
+    }
   },
 
   methods: {
-    async login(e) {
-      let form = { username: this.username, password: this.password };
+    async login (e) {
+      let form = { username: this.username, password: this.password }
       this.$http
-        .post("/login", form)
+        .post('/login', form)
         .then(res => {
-          this.$app.currentUser = res.data;
-          this.error = false;
+          this.$app.currentUser = res.data
+          this.error = false
           if (this.$route.query.redirect) {
-            this.$router.push(this.$route.query.redirect);
+            this.$router.push(this.$route.query.redirect)
           } else {
-            this.$router.push("/");
+            this.$router.push('/')
           }
         })
         .catch(e => {
-          this.error = true;
-        });
+          this.error = true
+        })
 
-      e.preventDefault();
+      e.preventDefault()
     }
   },
 
   directives: {
     focus: {
-      inserted: function(el) {
-        el.focus();
+      inserted: function (el) {
+        el.focus()
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
