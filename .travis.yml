@@ -1,27 +1,30 @@
-language: go
-
-go_import_path: github.com/UpdateHub/updatehub-ce
-
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:masterminds/glide'
-    packages:
-      - libarchive-dev
-      - glide
-
 matrix:
   include:
-    - go: "1.10.x"
-      install:
+    - language: go
+      go:
+        - "1.11.x"
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:masterminds/glide'
+          packages:
+            - libarchive-dev
+            - glide
+      env:
+        - GO111MODULE=on
+      go_import_path: github.com/UpdateHub/updatehub-ce
+      install: true
+      before_install:
         - glide install
       script:  go test -v ./...
-    - go: "1.11.x"
-      script: go test -v ./...
-  allow_failures:
-    - go: master
-
-env:
-  - GO111MODULE=on
-
-install: true
+    - language: node_js
+      node_js:
+        - "12.0"
+      before_install:
+        - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version "1.15.2"
+        - export PATH="$HOME/.yarn/bin:$PATH"
+        - cd ui
+      install:
+        - yarn install
+      script:
+        - yarn run lint --no-fix
