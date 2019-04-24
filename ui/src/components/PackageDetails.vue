@@ -125,17 +125,17 @@ export default {
       return this.$http
         .get('/api/packages/' + this.$route.params.uid)
         .then(res => {
-          return res.data;
-        });
+          return res.data
+        })
     },
 
-     deletePackage() {
+    deletePackage () {
       this.$http
-      .delete("/api/packages/" + this.$route.params.uid + "/delete")
-      .then(res => {
-        this.$router.push("/packages");
-      });
-    },
+        .delete('/api/packages/' + this.$route.params.uid + '/delete')
+        .then(res => {
+          this.$router.push('/packages')
+        })
+    }
   },
 
   filters: {
