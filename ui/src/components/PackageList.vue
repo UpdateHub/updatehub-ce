@@ -87,7 +87,7 @@ export default {
           this.$router.push('/packages/' + res.data.uid)
         })
         .catch(e => {
-          this.lastError = e.response.data.message
+          this.lastError = e.message
           this.uploadProgress = 0
         })
     }
