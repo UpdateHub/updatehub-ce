@@ -105,22 +105,22 @@ func (api *PackagesAPI) UploadPackage(c echo.Context) error {
 		return err
 	}
 
-	var supportedHardware []string
+	pkg := &models.Package{
+		UID:       fmt.Sprintf("%x", uid),
+		Version:   metadata.Version,
+		Signature: signature,
+		Metadata:  rawMetadata,
+	}
+
 	switch t := metadata.SupportedHardware.(type) {
 	case []interface{}:
+		var supportedHardware []string
 		for _, s := range t {
 			supportedHardware = append(supportedHardware, s.(string))
 		}
+		pkg.SupportedHardware = supportedHardware
 	case interface{}:
-		supportedHardware = append(supportedHardware, t.(string))
-	}
-
-	pkg := &models.Package{
-		UID:               fmt.Sprintf("%x", uid),
-		Version:           metadata.Version,
-		SupportedHardware: supportedHardware,
-		Signature:         signature,
-		Metadata:          rawMetadata,
+		pkg.SupportedHardware = t.(string)
 	}
 
 	if err := api.db.Save(pkg); err != nil {
