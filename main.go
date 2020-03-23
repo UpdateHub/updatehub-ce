@@ -66,6 +66,9 @@ func execute(cmd *cobra.Command, args []string) {
 	}
 
 	e := echo.New()
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "time=${time_rfc3339_nano} method=${method}, uri=${uri}, status=${status} error=${error}\n",
+	}))
 	e.GET("/", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/ui/")
 	})
