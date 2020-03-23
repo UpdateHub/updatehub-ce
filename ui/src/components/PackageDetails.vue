@@ -24,7 +24,7 @@
         <tr>
           <td>{{ pkg.uid }}</td>
           <td>{{ pkg.version }}</td>
-          <td>{{ pkg.supported_hardware.join(', ') }}</td>
+          <td>{{ [pkg.supported_hardware].join(', ') }}</td>
         </tr>
       </tbody>
     </table>

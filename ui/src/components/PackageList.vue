@@ -31,7 +31,7 @@
         <tr v-for="pkg in packages" :key="pkg.id" @click="$router.push(`/packages/${pkg.uid}`)">
           <td>{{ pkg.uid }}</td>
           <td>{{ pkg.version }}</td>
-          <td>{{ pkg.supported_hardware.join(', ') }}</td>
+          <td>{{ [pkg.supported_hardware].join(', ') }}</td>
         </tr>
       </tbody>
     </table>
