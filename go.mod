@@ -19,7 +19,7 @@ require (
 	github.com/mattn/go-isatty v0.0.0-20180830101745-3fb116b82035 // indirect
 	github.com/mattn/go-shellwords v0.0.0-20180605041737-f8471b0a71de // indirect
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
-	github.com/sirupsen/logrus v1.3.0
+	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/afero v1.2.1 // indirect
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/pflag v1.0.3 // indirect
@@ -29,6 +29,5 @@ require (
 	github.com/vmihailenco/msgpack v4.0.2+incompatible // indirect
 	go.etcd.io/bbolt v1.3.1-etcd.8 // indirect
 	golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e // indirect
-	golang.org/x/sys v0.0.0-20181011152604-fa43e7bc11ba // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 )
