@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "core-js": "^3.4.4",
-    "moment": "^2.24.0",
+    "moment": "^2.28.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
   },
