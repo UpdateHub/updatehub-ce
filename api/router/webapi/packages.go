@@ -5,25 +5,27 @@
 package webapi
 
 import (
+	"archive/zip"
 	"bytes"
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 
-	_ "github.com/UpdateHub/updatehub/installmodes/copy"
-	_ "github.com/UpdateHub/updatehub/installmodes/flash"
-	_ "github.com/UpdateHub/updatehub/installmodes/imxkobs"
-	_ "github.com/UpdateHub/updatehub/installmodes/mender"
-	_ "github.com/UpdateHub/updatehub/installmodes/raw"
-	_ "github.com/UpdateHub/updatehub/installmodes/tarball"
-	_ "github.com/UpdateHub/updatehub/installmodes/ubifs"
-	_ "github.com/UpdateHub/updatehub/installmodes/zephyr"
+	// Modules have to be included so the parser can support these install modes
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/copy"
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/flash"
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/imxkobs"
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/mender"
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/raw"
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/tarball"
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/ubifs"
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/zephyr"
 
+	"github.com/UpdateHub/updatehub-ce/metadata"
 	"github.com/UpdateHub/updatehub-ce/models"
-	"github.com/UpdateHub/updatehub/libarchive"
-	"github.com/UpdateHub/updatehub/metadata"
 	"github.com/asdine/storm"
 	"github.com/labstack/echo"
 )
@@ -131,35 +133,62 @@ func (api *PackagesAPI) UploadPackage(c echo.Context) error {
 }
 
 func parsePackage(file string) (*metadata.UpdateMetadata, []byte, []byte, error) {
-	la := &libarchive.LibArchive{}
-
-	reader, err := libarchive.NewReader(la, file, 10240)
+	reader, err := zip.OpenReader(file)
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	defer reader.Free()
+	defer reader.Close()
 
-	data := bytes.NewBuffer(nil)
-	err = reader.ExtractFile("metadata", data)
-	if err != nil {
-		return nil, nil, nil, err
+	var update_metadata *metadata.UpdateMetadata
+	var signature []byte
+	var rawMetadata []byte
+
+	for _, f := range reader.File {
+		if f.Name == "metadata" {
+			f, err := f.Open()
+			if err != nil {
+				return nil, nil, nil, err
+			}
+			defer f.Close()
+			data := bytes.NewBuffer(nil)
+
+			_, err = io.Copy(data, f)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			update_metadata, err = metadata.NewUpdateMetadata(data.Bytes())
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			rawMetadata = data.Bytes()
+		}
+
+		if f.Name == "signature" {
+			f, err := f.Open()
+			if err != nil {
+				return nil, nil, nil, err
+			}
+			defer f.Close()
+			data := bytes.NewBuffer(nil)
+
+			_, err = io.Copy(data, f)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			signature = data.Bytes()
+		}
 	}
 
-	metadata, err := metadata.NewUpdateMetadata(data.Bytes())
-	if err != nil {
-		return nil, nil, nil, err
+	if update_metadata == nil {
+		return nil, nil, nil, errors.New("Package missing metadata file")
 	}
 
-	reader, err = libarchive.NewReader(la, file, 10240)
-	if err != nil {
-		return metadata, data.Bytes(), nil, err
+	if signature == nil {
+		return nil, nil, nil, errors.New("Package missing signature file")
 	}
 
-	signature := bytes.NewBuffer(nil)
-	err = reader.ExtractFile("signature", signature)
-	if err != nil {
-		return metadata, data.Bytes(), nil, err
-	}
-
-	return metadata, data.Bytes(), signature.Bytes(), nil
+	return update_metadata, rawMetadata, signature, nil
 }

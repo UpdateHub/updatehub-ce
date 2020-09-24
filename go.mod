@@ -6,9 +6,8 @@ require (
 	github.com/DataDog/zstd v1.3.5 // indirect
 	github.com/OSSystems/crosscoap v0.0.0-20190221182337-288708a6275e
 	github.com/OSSystems/go-coap v0.0.0-20180816174521-f2a4ec53cd34 // indirect
-	github.com/OSSystems/pkg v0.0.0-20170629204819-0c38fb3a1f0f // indirect
+	github.com/OSSystems/pkg v0.0.0-20170629204819-0c38fb3a1f0f
 	github.com/Sereal/Sereal v0.0.0-20190203221631-e99c7e10fca4 // indirect
-	github.com/UpdateHub/updatehub v0.0.0-20190208134925-66504de7effb
 	github.com/asdine/storm v2.1.2+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
@@ -20,7 +19,6 @@ require (
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/magiconair/properties v1.8.4 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
-	github.com/mattn/go-shellwords v1.0.10 // indirect
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
 	github.com/rogpeppe/go-internal v1.6.2 // indirect

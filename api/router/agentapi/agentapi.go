@@ -5,6 +5,7 @@
 package agentapi
 
 import (
+	"archive/zip"
 	"bytes"
 	"crypto/sha256"
 	"encoding/json"
@@ -13,9 +14,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/UpdateHub/updatehub-ce/metadata"
 	"github.com/UpdateHub/updatehub-ce/models"
-	"github.com/UpdateHub/updatehub/libarchive"
-	"github.com/UpdateHub/updatehub/metadata"
 	"github.com/asdine/storm"
 	"github.com/labstack/echo"
 )
@@ -219,15 +219,28 @@ func (api *AgentAPI) GetObjectFromPackage(c echo.Context) error {
 	objectUID := c.Param("object")
 	packageUID := c.Param("package")
 
-	reader, err := libarchive.NewReader(&libarchive.LibArchive{}, packageUID, 10240)
+	reader, err := zip.OpenReader(packageUID)
+
 	if err != nil {
 		return err
 	}
-	defer reader.Free()
+	defer reader.Close()
 
-	if err := reader.ExtractFile(objectUID, c.Response()); err != nil {
-		return err
+	for _, f := range reader.File {
+		if f.Name == objectUID {
+			f, err := f.Open()
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+
+			_, err = io.Copy(c.Response(), f)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
 	}
 
-	return nil
+	return fmt.Errorf("Package does not contain object %q", objectUID)
 }

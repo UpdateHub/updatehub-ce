@@ -1,5 +1,5 @@
 FROM golang:1.15-alpine3.12 AS builder
-RUN apk add --update git curl libarchive-dev build-base linux-headers nodejs nodejs-npm
+RUN apk add --update git curl build-base linux-headers nodejs nodejs-npm
 
 WORKDIR /app/server
 
@@ -17,8 +17,6 @@ RUN go get -u github.com/gobuffalo/packr/... && \
     packr install
 
 FROM alpine:3.12
-
-RUN apk add --update libarchive
 
 COPY --from=builder /go/bin/updatehub-ce /usr/bin/updatehub-ce
 
