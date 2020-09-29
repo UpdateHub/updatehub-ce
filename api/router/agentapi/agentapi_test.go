@@ -1,8 +1,7 @@
 package agentapi
 
 import (
-	"archive/tar"
-	"compress/gzip"
+	"archive/zip"
 	"crypto"
 	"crypto/rand"
 	"crypto/rsa"
@@ -269,7 +268,7 @@ func (suite *AgentApiTestSuite) TestGetObjectFromPackage() {
 
 	memFs := afero.NewOsFs()
 
-	tarballPath, err := generateTarball(memFs)
+	tarballPath, err := generateArchive(memFs)
 	assert.NoError(suite.T(), err)
 
 	e := echo.New()
@@ -289,7 +288,7 @@ func (suite *AgentApiTestSuite) TestGetObjectFromPackageWrongFile() {
 
 	memFs := afero.NewOsFs()
 
-	tarballPath, err := generateTarball(memFs)
+	tarballPath, err := generateArchive(memFs)
 	assert.NoError(suite.T(), err)
 
 	e := echo.New()
@@ -309,7 +308,7 @@ func (suite *AgentApiTestSuite) TestGetObjectFromPackageWrongObject() {
 
 	memFs := afero.NewOsFs()
 
-	tarballPath, err := generateTarball(memFs)
+	tarballPath, err := generateArchive(memFs)
 	assert.NoError(suite.T(), err)
 
 	e := echo.New()
@@ -328,19 +327,16 @@ func TestAgentApiSuite(t *testing.T) {
 	suite.Run(t, new(AgentApiTestSuite))
 }
 
-func generateTarball(fsBackend afero.Fs) (string, error) {
-	tarballPath := "output.zip"
-	file, err := fsBackend.Create(tarballPath)
+func generateArchive(fsBackend afero.Fs) (string, error) {
+	archivePath := "output.zip"
+	file, err := fsBackend.Create(archivePath)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer file.Close()
 
-	gw := gzip.NewWriter(file)
-	defer gw.Close()
-
-	tw := tar.NewWriter(gw)
-	defer tw.Close()
+	w := zip.NewWriter(file)
+	defer w.Close()
 
 	key, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
@@ -375,22 +371,20 @@ func generateTarball(fsBackend afero.Fs) (string, error) {
 	}
 
 	for _, file := range files {
-		hdr := &tar.Header{
-			Name: file.Name,
-			Mode: 0600,
-			Uid:  os.Getuid(),
-			Gid:  os.Getgid(),
-			Size: int64(len(file.Body)),
-		}
-
-		if err := tw.WriteHeader(hdr); err != nil {
+		f, err := w.Create(file.Name)
+		if err != nil {
 			return "", err
 		}
 
-		if _, err := tw.Write([]byte(file.Body)); err != nil {
+		if _, err := f.Write([]byte(file.Body)); err != nil {
 			return "", err
 		}
 	}
 
-	return tarballPath, nil
+	err = w.Close()
+	if err != nil {
+		return "", err
+	}
+
+	return archivePath, nil
 }
