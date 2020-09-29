@@ -56,26 +56,20 @@ docker run -d -p 8080:8080 updatehub/updatehub-ce:latest
 
 ## Building
 
-The `updatehub-ce` uses `glide` to manage its dependencies and
-`npm` to build the web UI for the server.  The easiest way to install
-its latest release on Mac or Linux is with the following script:
+The `updatehub-ce` uses `go mod` to manage its dependencies and
+`npm` to build the web UI for the server. `go mod` should be
+included in your default instalation of the `go` toolchain.
+
+On Mac OS X you can install the latest release of node via Homebrew:
 
 ```
-$ curl https://glide.sh/get | sh
+$ brew install node
 ```
 
-On Mac OS X you can also install the latest release via Homebrew:
+On Ubuntu you can install node using:
 
 ```
-$ brew install glide node
-```
-
-On Ubuntu Precise (12.04), Trusty (14.04), Wily (15.10) or Xenial
-(16.04) you can install from our PPA:
-
-```
-$ sudo add-apt-repository ppa:masterminds/glide && sudo apt-get update
-$ sudo apt-get install glide nodejs npm
+$ sudo apt-get install nodejs npm
 ```
 
 After that, need to install `packr` that is a simple solution for
