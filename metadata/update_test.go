@@ -13,7 +13,6 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
-	"errors"
 	"testing"
 
 	"github.com/UpdateHub/updatehub-ce/installmodes"
@@ -75,20 +74,6 @@ func TestCompressedObject(t *testing.T) {
 	obj, err := NewUpdateMetadata([]byte(ValidJSONMetadataWithCompressedObject))
 	if !assert.NotNil(t, obj) {
 		t.Fatal(err)
-	}
-}
-
-func TestInvalidCompressedObject(t *testing.T) {
-	mode := installmodes.RegisterInstallMode(installmodes.InstallMode{
-		Name:      "test",
-		GetObject: func() interface{} { return TestObject{} },
-	})
-
-	defer mode.Unregister()
-
-	_, err := NewUpdateMetadata([]byte(ValidJSONMetadataWithoutCompressedObject))
-	if assert.Error(t, err) {
-		assert.Equal(t, err, errors.New("Compressed object does not embed CompressedObject struct"))
 	}
 }
 

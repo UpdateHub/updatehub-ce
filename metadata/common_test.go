@@ -52,15 +52,6 @@ const (
 	  ]
 	}`
 
-	ValidJSONMetadataWithoutCompressedObject = `{
-	  "product-uid": "0123456789",
-	  "objects": [
-	    [
-	      { "mode": "test", "compressed": true }
-	    ]
-	  ]
-	}`
-
 	ValidJSONMetadataWithSupportedHardwareAny = `{
 	  "product-uid": "0123456789",
 	  "supported-hardware": "any",
