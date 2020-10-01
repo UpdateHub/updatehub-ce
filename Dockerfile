@@ -1,5 +1,5 @@
 FROM golang:1.15-alpine3.12 AS builder
-RUN apk add --update git curl build-base linux-headers nodejs nodejs-npm
+RUN apk add --update git curl build-base linux-headers nodejs yarn
 
 WORKDIR /app/server
 
@@ -13,7 +13,7 @@ RUN go mod download
 COPY . .
 
 RUN go get -u github.com/gobuffalo/packr/... && \
-    (cd ui; npm install && npm run build) && \
+    (cd ui; yarn install && yarn run build) && \
     packr install
 
 FROM alpine:3.12
