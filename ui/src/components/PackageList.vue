@@ -71,7 +71,7 @@ export default {
     uploadPackage (e) {
       this.lastError = null
 
-      let form = new FormData()
+      const form = new FormData()
       form.append('file', this.$refs.file.files[0])
 
       this.$http
