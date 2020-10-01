@@ -138,7 +138,7 @@ export default {
     },
 
     toggleDeviceSelection (uid) {
-      let index = this.selectedDevices.findIndex((device, i) => {
+      const index = this.selectedDevices.findIndex((device, i) => {
         return device.uid === uid
       })
 
@@ -182,7 +182,7 @@ export default {
           })
         })
         .then(res => {
-          let rollout = res.data
+          const rollout = res.data
           this.$router.push('/rollouts/' + rollout.id)
         })
     }

@@ -65,7 +65,7 @@ var app = new Vue({
 
       set (currentUser) {
         localStorage.currentUser = JSON.stringify(currentUser)
-        Vue.prototype.$http.defaults.headers.common['Authorization'] =
+        Vue.prototype.$http.defaults.headers.common.Authorization =
           'Bearer ' + currentUser.token
       }
     }
@@ -73,7 +73,7 @@ var app = new Vue({
 })
 
 if (app.currentUser) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] =
+  Vue.prototype.$http.defaults.headers.common.Authorization =
     'Bearer ' + app.currentUser.token
 }
 

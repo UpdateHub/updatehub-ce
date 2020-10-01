@@ -44,7 +44,7 @@ export default {
 
   methods: {
     async login (e) {
-      let form = { username: this.username, password: this.password }
+      const form = { username: this.username, password: this.password }
       this.$http
         .post('/login', form)
         .then(res => {

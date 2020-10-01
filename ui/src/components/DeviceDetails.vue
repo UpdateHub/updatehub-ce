@@ -61,7 +61,7 @@ export default {
   },
 
   async created () {
-    let uid = this.$route.params.uid || this.uid
+    const uid = this.$route.params.uid || this.uid
     this.device = await this.getDevice(uid)
   },
 
