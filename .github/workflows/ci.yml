@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [ 'go', 'ui' ]
+    name: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-go@v2
+        if: matrix.project == 'go'
+        with:
+          go-version: 1.15
+      - name: Cache modules [Go]
+        uses: actions/cache@v1
+        if: matrix.project == 'go'
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+      - name: Run tests [Go]
+        if: matrix.project == 'go'
+        run: go test -v ./...
+      - name: Go build [Go]
+        if: matrix.project == 'go'
+        run: go build -v ./...
+
+      - uses: actions/setup-node@v1
+        if: matrix.project == 'ui'
+        with:
+          node-version: '14'
+      - name: Cache modules [UI]
+        if: matrix.project == 'ui'
+        uses: actions/cache@v1
+        with:
+          path: ui/node_modules
+          key: ${{ runner.OS }}-ui-${{ hashFiles('**/yarn.lock') }}
+      - name: Install dependencies [UI]
+        if: matrix.project == 'ui'
+        working-directory: ${{ matrix.project }}
+        run: yarn install
+      - name: Run lint [UI]
+        if: matrix.project == 'ui'
+        working-directory: ${{ matrix.project }}
+        run: yarn run lint --no-fix
