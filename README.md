@@ -1,4 +1,5 @@
 ![UpdateHub logo](https://github.com/UpdateHub/updatehub/blob/v1/doc/updatehub.png?raw=true)
+![CI](https://github.com/UpdateHub/updatehub-ce/workflows/CI/badge.svg)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FUpdateHub%2Fupdatehub-ce.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FUpdateHub%2Fupdatehub-ce?ref=badge_shield)
 
 ---
