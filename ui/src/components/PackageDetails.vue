@@ -65,36 +65,18 @@
           </ul>
         </div>
         <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <span>Mode</span>
+          <ul
+            class="list-group list-group-flush"
+            v-for="(item, index) in items"
+            :key="index"
+            >
+            <li
+              class="list-group-item"
+              v-if="pkg.metadata.objects[currentInstallSet][selectedObject][item.field]"
+              >
+              <span>{{ item.title }}</span>
               <br>
-              <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject].mode }}</code>
-            </li>
-            <li class="list-group-item">
-              <span>Target</span>
-              <br>
-              <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject].target }}</code>
-            </li>
-            <li class="list-group-item">
-              <span>Target Path</span>
-              <br>
-              <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject]['target-path'] }}</code>
-            </li>
-            <li class="list-group-item">
-              <span>Target Type</span>
-              <br>
-              <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject]['target-type'] }}</code>
-            </li>
-            <li class="list-group-item">
-              <span>Filesystem</span>
-              <br>
-              <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject].filesystem }}</code>
-            </li>
-            <li class="list-group-item">
-              <span>Format Device</span>
-              <br>
-              <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject]['format?'] }}</code>
+              <code>{{ pkg.metadata.objects[currentInstallSet][selectedObject][item.field] }}</code>
             </li>
           </ul>
         </div>
@@ -111,7 +93,81 @@ export default {
     return {
       pkg: { supported_hardware: [], metadata: { objects: [[]] } },
       selectedObject: -1,
-      currentInstallSet: 0
+      currentInstallSet: 0,
+      items: [
+        {
+          title: 'Filename',
+          field: 'filename'
+        },
+        {
+          title: 'Compressed',
+          field: 'compressed'
+        },
+        {
+          title: 'Required Uncompressed Size',
+          field: 'required-uncompressed-size'
+        },
+        {
+          title: 'Chunk Size',
+          field: 'chunk-size'
+        },
+        {
+          title: 'Skip',
+          field: 'skip'
+        },
+        {
+          title: 'Seek',
+          field: 'seek'
+        },
+        {
+          title: 'Count',
+          field: 'count'
+        },
+        {
+          title: 'Truncate',
+          field: 'truncate'
+        },
+        {
+          title: 'Filesystem',
+          field: 'filesystem'
+        },
+        {
+          title: 'Target',
+          field: 'target'
+        },
+        {
+          title: 'Target Path',
+          field: 'target-path'
+        },
+        {
+          title: 'Format',
+          field: 'format?'
+        },
+        {
+          title: 'Format Options',
+          field: 'format-options'
+        },
+        {
+          title: 'Mount Options',
+          field: 'mount-options'
+        },
+        {
+          title: '1K Padding',
+          field: '1k_padding'
+        },
+        {
+          title: 'Search Exponent',
+          field: 'search_exponent'
+        },
+        {
+          title: 'Chip 0 Device Path',
+          field: 'chip_0_device_path'
+        },
+        {
+          title: 'Chip 1 Device Path',
+          field: 'chip_1_device_path'
+        }
+      ]
     }
   },
 
