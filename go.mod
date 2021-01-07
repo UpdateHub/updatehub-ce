@@ -6,7 +6,6 @@ require (
 	github.com/DataDog/zstd v1.3.5 // indirect
 	github.com/OSSystems/crosscoap v0.0.0-20190221182337-288708a6275e
 	github.com/OSSystems/go-coap v0.0.0-20180816174521-f2a4ec53cd34 // indirect
-	github.com/OSSystems/pkg v0.0.0-20170629204819-0c38fb3a1f0f
 	github.com/Sereal/Sereal v0.0.0-20190203221631-e99c7e10fca4 // indirect
 	github.com/asdine/storm v2.1.2+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -15,6 +14,9 @@ require (
 	github.com/gobuffalo/packd v1.0.0 // indirect
 	github.com/gobuffalo/packr v1.30.1
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
+	github.com/google/go-github v17.0.0+incompatible // indirect
+	github.com/google/go-querystring v1.0.0 // indirect
+	github.com/hashicorp/go-version v1.2.1 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/magiconair/properties v1.8.4 // indirect
@@ -27,9 +29,9 @@ require (
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
+	github.com/tcnksm/go-latest v0.0.0-20170313132115-e3007ae9052e
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	github.com/vmihailenco/msgpack v4.0.2+incompatible // indirect
 	go.etcd.io/bbolt v1.3.5 // indirect

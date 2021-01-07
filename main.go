@@ -26,6 +26,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/tcnksm/go-latest"
 )
 
 func main() {
@@ -38,6 +39,7 @@ func main() {
 		Run: execute,
 	}
 
+	rootCmd.PersistentFlags().BoolP("version", "v", false, "Show the current version")
 	rootCmd.PersistentFlags().StringP("db", "", "updatehub.db", "Database file")
 	rootCmd.PersistentFlags().StringP("username", "", "admin", "Admin username")
 	rootCmd.PersistentFlags().StringP("password", "", "admin", "Admin password")
@@ -46,6 +48,7 @@ func main() {
 	rootCmd.PersistentFlags().IntP("coap", "", 5683, "Coap server listen port")
 	rootCmd.PersistentFlags().StringP("secret", "", "secret", "JWT secret key")
 
+	viper.BindPFlag("version", rootCmd.PersistentFlags().Lookup("version"))
 	viper.BindPFlag("db", rootCmd.PersistentFlags().Lookup("db"))
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
@@ -60,6 +63,20 @@ func main() {
 }
 
 func execute(cmd *cobra.Command, args []string) {
+	if viper.GetBool("version") {
+		githubTag := &latest.GithubTag{
+			Owner:      "UpdateHub",
+			Repository: "updatehub-ce",
+		}
+
+		res, err := latest.Check(githubTag, "0.0.0")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println("UpdateHub-CE current version:", res.Current)
+	}
+
 	db, err := storm.Open(viper.GetString("db"))
 	if err != nil {
 		log.Fatal(err)

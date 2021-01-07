@@ -27,7 +27,7 @@
     </div>
   </div>
 </div>
-</div>
+<div class="bottomright">{{version}}</div>
 </template>
 
 <script>
@@ -70,6 +70,12 @@ export default {
         el.focus()
       }
     }
+  },
+
+  computed: {
+    version: function () {
+      return process.env.VUE_APP_VERSION
+    }
   }
 }
 </script>
@@ -77,5 +83,12 @@ export default {
 <style scoped>
 .container-fluid {
   background-color: #0e293e;
+}
+
+.bottomright {
+  position: absolute;
+  bottom: 0px;
+  right: 12px;
+  color: #ffffff;
 }
 </style>
