@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
-    "core-js": "^3.8.0",
+    "core-js": "^3.8.2",
     "git-describe": "^4.0.4",
     "moment": "^2.29.1",
     "vue": "^2.6.12",
