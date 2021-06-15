@@ -20,6 +20,7 @@ import (
 	_ "github.com/UpdateHub/updatehub-ce/installmodes/imxkobs"
 	_ "github.com/UpdateHub/updatehub-ce/installmodes/mender"
 	_ "github.com/UpdateHub/updatehub-ce/installmodes/raw"
+	_ "github.com/UpdateHub/updatehub-ce/installmodes/raw_delta"
 	_ "github.com/UpdateHub/updatehub-ce/installmodes/tarball"
 	_ "github.com/UpdateHub/updatehub-ce/installmodes/ubifs"
 	_ "github.com/UpdateHub/updatehub-ce/installmodes/zephyr"
