@@ -20,7 +20,7 @@ import (
 
 	"github.com/UpdateHub/updatehub-ce/models"
 	"github.com/asdine/storm"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
