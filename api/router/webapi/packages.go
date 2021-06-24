@@ -27,7 +27,7 @@ import (
 	"github.com/UpdateHub/updatehub-ce/metadata"
 	"github.com/UpdateHub/updatehub-ce/models"
 	"github.com/asdine/storm"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 const (

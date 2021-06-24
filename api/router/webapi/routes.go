@@ -2,7 +2,7 @@ package webapi
 
 import (
 	"github.com/asdine/storm"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 )
 

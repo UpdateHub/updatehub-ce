@@ -12,7 +12,7 @@ import (
 	"github.com/UpdateHub/updatehub-ce/models"
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 const (
