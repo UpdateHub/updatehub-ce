@@ -13,7 +13,7 @@
     "git-describe": "^4.0.4",
     "moment": "^2.29.1",
     "vue": "^2.6.12",
-    "vue-router": "^3.4.9"
+    "vue-router": "^3.5.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.10",
