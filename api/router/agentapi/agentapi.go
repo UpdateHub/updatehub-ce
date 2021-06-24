@@ -9,9 +9,12 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"regexp"
+	"strconv"
 	"time"
 
 	"github.com/UpdateHub/updatehub-ce/metadata"
@@ -219,6 +222,11 @@ func (api *AgentAPI) GetObjectFromPackage(c echo.Context) error {
 	objectUID := c.Param("object")
 	packageUID := c.Param("package")
 
+	lower, upper, err := parseRangeHeader(c.Request().Header["Range"])
+	if err != nil {
+		return err
+	}
+
 	reader, err := zip.OpenReader(packageUID)
 
 	if err != nil {
@@ -234,7 +242,28 @@ func (api *AgentAPI) GetObjectFromPackage(c echo.Context) error {
 			}
 			defer f.Close()
 
-			_, err = io.Copy(c.Response(), f)
+			rd, _ := f.(io.Reader)
+
+			if lower != nil {
+				step := 128 * 1024
+				read := 0
+				for read < *lower {
+					buf_size := min((*lower - read), step)
+					buf := make([]byte, buf_size)
+
+					n, err := io.ReadFull(f, buf)
+					if err != nil {
+						return err
+					}
+					read += n
+				}
+
+				if upper != nil {
+					rd = io.LimitReader(f, int64(*upper-*lower)+1)
+				}
+			}
+
+			_, err = io.Copy(c.Response(), rd)
 			if err != nil {
 				return err
 			}
@@ -243,4 +272,46 @@ func (api *AgentAPI) GetObjectFromPackage(c echo.Context) error {
 	}
 
 	return fmt.Errorf("Package does not contain object %q", objectUID)
+}
+
+func min(a int, b int) int {
+	if a < b {
+		return a
+	} else {
+		return b
+	}
+}
+
+func parseRangeHeader(headers []string) (*int, *int, error) {
+	if len(headers) < 1 {
+		return nil, nil, nil
+	}
+	header := headers[0]
+	re := regexp.MustCompile("bytes=([\\d]*)-([\\d]*)")
+
+	ms := re.FindAllStringSubmatch(header, -1)
+	if len(ms) < 1 {
+		return nil, nil, errors.New("Failed to parse byte rage header")
+	}
+
+	var lower *int
+	var upper *int
+
+	if len(ms[0][1]) > 0 {
+		l, err := strconv.Atoi(ms[0][1])
+		if err != nil {
+			return nil, nil, errors.New("Failed to parse lower bound from rage header")
+		}
+		lower = &l
+	}
+
+	if len(ms[0][2]) > 0 {
+		u, err := strconv.Atoi(ms[0][2])
+		if err != nil {
+			return nil, nil, errors.New("Failed to parse upper bound from rage header")
+		}
+		upper = &u
+	}
+
+	return lower, upper, nil
 }
