@@ -12,7 +12,7 @@
     "core-js": "^3.8.3",
     "git-describe": "^4.0.4",
     "moment": "^2.29.1",
-    "vue": "^2.6.12",
+    "vue": "^2.6.14",
     "vue-router": "^3.4.9"
   },
   "devDependencies": {
@@ -27,7 +27,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.4.1",
-    "vue-template-compiler": "^2.6.12",
+    "vue-template-compiler": "^2.6.14",
     "webpack-manifest-plugin": "^3.0.0"
   },
   "eslintConfig": {
