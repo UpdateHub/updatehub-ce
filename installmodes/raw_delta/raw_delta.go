@@ -30,4 +30,6 @@ type RawDeltaObject struct {
 
 	Target     string `json:"target"`
 	TargetType string `json:"target-type"`
+	ChunkSize  int    `json:"chunk-size,omitempty"`
+	Seek       int    `json:"seek,omitempty"`
 }
