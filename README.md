@@ -38,6 +38,8 @@ See the comparison table below to help you to choose which version fits you need
 
 ## Usage
 
+The easyest way to run a Updatehub CE server is to run a Docker image to start a ready-to-use server.
+
 ```
 $ docker run updatehub/updatehub-ce --help
 Usage:
@@ -55,7 +57,18 @@ docker run -d -p 8080:8080 updatehub/updatehub-ce:latest
 
 ```
 
+On the example above, a Docker image will be automatically downloaded and run on 8080 port.
+Now you can access the UpdateHub CE dashboard through the host IP on your web browser.
+
+```
+http://<Host_IP_Address>:8080/
+```
+
+The default login and password is `admin`.
+
 ## Building
+
+If you want to build `updatehub-ce` by yourself, follow these steps:
 
 The `updatehub-ce` uses `go mod` to manage its dependencies and
 `yarn` to build the web UI for the server. `go mod` should be
