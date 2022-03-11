@@ -84,8 +84,7 @@ bundling static assets inside of Go binaries use by
 To install Packr utility and the dependencies:
 
 ```
-$ go get -u github.com/gobuffalo/packr/packr
-$ go get -u github.com/gobuffalo/packr
+$ go install github.com/gobuffalo/packr/v2/packr2@latest
 ```
 
 
@@ -93,7 +92,7 @@ Finally, you can build `updatehub-ce` as:
 
 ```
 $ cd <YOUR-UPDATEHUB-CE-PATH>/ui/ && yarn install && yarn run build && cd ..
-$ packr install
+$ ~/go/bin/packr2 install
 $ go build
 $ go install
 ```
@@ -101,7 +100,7 @@ $ go install
 Now you can run the `updatehub-ce` as:
 
 ```
-./updatehub-ce --http 8080
+~/go/bin/updatehub-ce --http 8080
 ```
 
 ## Yocto Project
