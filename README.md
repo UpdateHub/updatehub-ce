@@ -91,6 +91,23 @@ Now you can run the `updatehub-ce` as:
 ./updatehub-ce --http 8080
 ```
 
+## Yocto Project
+
+To integrate updatehub to an Yocto image, you need inherit the `updatehub-image`class
+from `meta-updatehub`. Also some variables must be set to work properly.
+
+Add these variables to `conf/local.conf`:
+
+```
+UPDATEHUB_SERVER_URL = “http://<Host_IP_Address>:8080"
+UPDATEHUB_POLLING_INTERVAL = “1m”
+```
+
+* `UPDATEHUB_SERVER_URL` will point to the `updatehub-ce` IP address. If you don't set this variable, your updatehub agent will not communicate with your `updatehub-ce` server, but with [Updatehub Cloud](https://updatehub.io/) instead.
+* `UPDATEHUB_POLLING_INTERVAL` will set the interval between each polling between the agent and the server. If you don't set this variable, your updatehub agent will poll every 24 hours.
+
+If you are not familiar with it, you can read the [Yocto Project Reference](https://docs.updatehub.io/yocto-project/yocto-project-reference/) or a [quick start example](https://docs.updatehub.io/quick-starting-with-raspberrypi3/).
+
 ## Contributing
 
 UpdateHub is an open source project and we love to receive contributions from our community.
