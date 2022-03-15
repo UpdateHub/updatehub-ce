@@ -111,8 +111,8 @@ from `meta-updatehub`. Also some variables must be set to work properly.
 Add these variables to `conf/local.conf`:
 
 ```
-UPDATEHUB_SERVER_URL = “http://<Host_IP_Address>:8080"
-UPDATEHUB_POLLING_INTERVAL = “1m”
+UPDATEHUB_SERVER_URL = 'http://<Host_IP_Address>:8080'
+UPDATEHUB_POLLING_INTERVAL = '1m'
 ```
 
 * `UPDATEHUB_SERVER_URL` will point to the `updatehub-ce` IP address. If you don't set this variable, your updatehub agent will not communicate with your `updatehub-ce` server, but with [Updatehub Cloud](https://updatehub.io/) instead.
