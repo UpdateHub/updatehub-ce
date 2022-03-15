@@ -28,7 +28,7 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.20.0",
     "vue-template-compiler": "^2.6.12",
-    "webpack-manifest-plugin": "^3.0.0"
+    "webpack-manifest-plugin": "^5.0.0"
   },
   "eslintConfig": {
     "root": true,
