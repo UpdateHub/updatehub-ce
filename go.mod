@@ -12,11 +12,10 @@ require (
 	github.com/gobuffalo/envy v1.9.0 // indirect
 	github.com/gobuffalo/packd v1.0.0 // indirect
 	github.com/gobuffalo/packr v1.30.1
-	github.com/gobuffalo/packr/v2 v2.5.1
 	github.com/google/go-github v17.0.0+incompatible // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/hashicorp/go-version v1.2.1 // indirect
-	github.com/labstack/echo/v4 v4.7.1
+	github.com/labstack/echo/v4 v4.7.2
 	github.com/rogpeppe/go-internal v1.6.2 // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/afero v1.8.2
