@@ -12,7 +12,7 @@
     "core-js": "^3.23.0",
     "git-describe": "^4.1.0",
     "moment": "^2.29.3",
-    "vue": "^2.6.12",
+    "vue": "^3.2.37",
     "vue-router": "^3.5.3"
   },
   "devDependencies": {
