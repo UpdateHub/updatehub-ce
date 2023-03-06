@@ -18,7 +18,7 @@ require (
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/rogpeppe/go-internal v1.6.2 // indirect
 	github.com/sirupsen/logrus v1.7.0
-	github.com/spf13/afero v1.8.2
+	github.com/spf13/afero v1.9.5
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.11.0
 	github.com/stretchr/testify v1.7.1
